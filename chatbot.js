@@ -1,21 +1,37 @@
 
 const inputField = document.getElementById("input");
 
+//begin information exclusive to state 1 ----------------------------------------------------
 let question1 = new Question();
 question1.setQuestion("What's your name?");
 question1.setValidAnswers([]);
 question1.setFilterPhrases(["my name is ", "my names ", "the names ", "names ", " is my name", "it is ",
-                            "that is ", "that would be "]);
+                            "that is ", "that would be ", "i'm ", "call me ", "i am ", "they call me ",
+                            "you can call me ", "its'a me ", " is my name"]);
+
+
 let question2 = new Question();
 question2.setQuestion("What's your favorite color?");
-question2.setValidAnswers(["red", "blue"]);
+question2.setValidAnswers(["red", "blue", "purple", "yellow", "pink", "green", "orange",
+                           "lime", "aqua", "navy", "coral", "teal", "mustard",
+                           "violet", "black", "white", "grey", "gray", "brown",
+                           "indigo", "peach", "maroon", "magenta"]);
 question2.setFilterPhrases(["my favorite color is ", " is my favorite color", " is the color", "the color is ",
-                            "it is ", "that is ", "that would be "]);
+                            "it is ", "that is ", "that would be ", "probably ", "obviously "]);
+
 const firstState = new State();
-firstState.setName("First state");
+firstState.setName("Introduction");
 firstState.setQuestions(question1);
 firstState.setQuestions(question2);
 
+//function to change background color
+function updateBackgroundColor(color) {
+    document.body.style.backgroundColor = color;
+}
+
+//end info for state 1 ---------------------------------------------------------------------
+
+//initialized chat entry
 addChatEntry("", "What's your name?");
 
 
@@ -28,6 +44,8 @@ inputField.addEventListener("keydown", (e) => {
         parse(input);
     }
 });
+
+
 
     //Parse and generate output from the user's message
 function parse(input) {
@@ -92,6 +110,10 @@ function parse(input) {
 
     //Determine what output should be sent
     response = firstState.checkQuestions(text);
+
+    if (firstState.questions[1].getAnswer() != ""){
+        updateBackgroundColor(firstState.questions[1].getAnswer());
+    }
 
     addChatEntry(input, response);
 }
