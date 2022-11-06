@@ -42,7 +42,8 @@ inputField.addEventListener("keydown", (e) => {
     if (e.code === "Enter") {
         let input = inputField.value;
         inputField.value = "";
-        parse(input);
+        var encodedInput = $('<div />').text(input).html();
+        parse(encodedInput);
     }
 });
 
