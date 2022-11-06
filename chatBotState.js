@@ -1,12 +1,9 @@
 
 
 class Question {
-    //private string question;
-    //private string answer;
-    //private string validAnswers = [];
 
     constructor() {
-        this.question = '';
+        this.question = [];
         this.answer = '';
         this.validAnswers = [];
         this.filterPhrases = [];
@@ -29,7 +26,22 @@ class Question {
     }
 
     getQuestion() {
-        return this.question;
+        return this.question[0];
+//        if (this.question.length == 1) {
+//            return this.question[0];
+//        }
+//        else {
+//            if (mood < -1) {
+//                return this.question[1];
+//            }
+//            else if (mood > 1) {
+//                return this.question[2];
+//            }
+//            else {
+//                return this.question[0];
+//            }
+//        }
+//        //return this.question;
     }
 
     getAnswer() {
@@ -56,9 +68,6 @@ class Question {
 }
 
 class State {
-    //private Question questions = [];
-    //private string stateName;
-    //private State nextState;
 
     constructor(){
         this.questions = [];
@@ -85,7 +94,7 @@ class State {
     checkQuestions(answer){
         var questions = this.getQuestions();
         var found = false;
-        var question = "";
+        var question = [];
         for (var i = 0; i < questions.length; i++) { //Check each question in this state
             if (found == true) {
                 question = questions[i].getQuestion(); //Return the next question after finding the current one
@@ -94,7 +103,6 @@ class State {
             if (questions[i].getAnswer() == "") { //If no answer has been set yet, then this is the question we want
                 var validAnswers = questions[i].getValidAnswers();
                 var filteredAnswer = questions[i].filter(answer);
-                console.log(filteredAnswer);
                 if (validAnswers.length == 0) {
                     questions[i].setAnswer(filteredAnswer); //Set the answer to that question
                     found = true;
@@ -109,10 +117,10 @@ class State {
                     }
                 }
                 if (found == false) { //If it was not a valid answer
-                    question = "Try again";
+                    question = ["Try again"];
                 }
                 if (found == true && i == questions.length-1) { //If we've answered all questions of this state
-                    question = "next state";
+                    question = ["next state"];
                 }
             }
         }
@@ -122,8 +130,20 @@ class State {
 }
 
 class chatBot {
-    //private State states = [];
     constructor(){
         this.states = [];
+        this.mood = 0;
+    }
+
+    incrementMood(){
+        this.mood += 1;
+    }
+
+    decrementMood(){
+        this.mood -= 1;
+    }
+
+    getMood() {
+        return this.mood;
     }
 }
