@@ -29,6 +29,10 @@ function updateBackgroundColor(color) {
     document.body.style.backgroundColor = color;
 }
 
+function displayTitle(title) {
+     document.getElementById("title").textContent += title;
+}
+
 //end info for state 1 ---------------------------------------------------------------------
 
 //initialized chat entry
@@ -115,9 +119,6 @@ function parse(input) {
         updateBackgroundColor(firstState.questions[1].getAnswer());
     }
     addChatEntry(input, response);
-//    for (var i = 0; i < response.length; i++) {
-//        addChatEntry(input, response[i]);
-//    }
 
 }
 
@@ -137,7 +138,7 @@ async function addChatEntry(input, response) {
 
 
 
-    for (var i = 0; i < response.length; i++) {
+    for (var i = 0; i < response.length; i++) { //Loop for each line in the chatbot response
         let botDiv = document.createElement("div");
         let botText = document.createElement("span");
         botDiv.id = "bot";

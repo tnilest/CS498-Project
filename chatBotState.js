@@ -103,7 +103,6 @@ class State {
             if (questions[i].getAnswer() == "") { //If no answer has been set yet, then this is the question we want
                 var validAnswers = questions[i].getValidAnswers();
                 var filteredAnswer = questions[i].filter(answer);
-                console.log(filteredAnswer);
                 if (validAnswers.length == 0) {
                     questions[i].setAnswer(filteredAnswer); //Set the answer to that question
                     found = true;
