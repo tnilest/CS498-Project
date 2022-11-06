@@ -25,7 +25,7 @@ question3.setFilterPhrases(["the title should be ", "we should call it ", " is t
     "probably ", "obviously ", "make it ", "set it to ", "call it ", "you should call it "]);
 
 let question4 = new Question();
-question4.setQuestion([["What color would you like the text to be?", "Please don't make it the same as your background.", "Thank you..."]]);
+question4.setQuestion([["What color would you like the title to be?", "Please don't make it the same as your background.", "Thank you..."]]);
 question4.setValidAnswers(["red", "blue", "purple", "yellow", "pink", "green", "orange",
     "lime", "aqua", "navy", "coral", "teal", "mustard",
     "violet", "black", "white", "grey", "gray", "brown",
@@ -49,8 +49,20 @@ firstState.setQuestions(question5);
 //function to change background color
 function updateBackgroundColor(color) {
     document.body.style.backgroundColor = color;
+    if(color == "black"){
+        let face = document.getElementById("face");
+        let title = document.getElementById("title");
+        face.style.color = "white";
+        title.style.color = "white";
+    }
+}
+
+//function to change chat text color
+function updateTitleColor(color) {
+    let title = document.getElementById("title");
+    title.style.color = color;
 }
 
 function displayTitle(title) {
-     document.getElementById("title").textContent += title;
+     document.getElementById("title").textContent = title;
 }

@@ -81,9 +81,21 @@ function parse(input) {
     //Determine what output should be sent
     response = firstState.checkQuestions(text);
 
+    //updates background color based on response to state1 question1
     if (firstState.questions[1].getAnswer() != ""){
         updateBackgroundColor(firstState.questions[1].getAnswer());
     }
+
+    if (firstState.questions[2].getAnswer() != ""){
+        displayTitle(firstState.questions[2].getAnswer());
+    }
+
+    //update text color based on response to state1 question4
+    if (firstState.questions[3].getAnswer() != "") {
+        updateTitleColor(firstState.questions[3].getAnswer());
+    }
+
+
     addChatEntry(input, response);
 
 }
@@ -114,8 +126,14 @@ async function addChatEntry(input, response) {
 
         messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;
-        await delay(2000);
-        botText.innerText = `${response[i]}`;
+        //await delay(2000);
+        if (firstState.questions[4].getAnswer() != "") {
+            botText.innerText = "(" + firstState.questions[4].getAnswer() + "): " +  `${response[i]}`;
+        }
+        else {
+            botText.innerText = `${response[i]}`;
+        }
+        
     }
 
 }
