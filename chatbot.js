@@ -26,6 +26,7 @@ firstState.setQuestions(question2);
 
 //function to change background color
 function updateBackgroundColor(color) {
+    setCookie("backgroundColor", color, 30);
     document.body.style.backgroundColor = color;
 }
 
