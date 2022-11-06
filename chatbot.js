@@ -79,10 +79,14 @@ function parse(input) {
                 .replace(/^thx$/g, "thanks");
 
     //Determine what output should be sent
+    //reply = firstState.checkReplies(text);
     response = firstState.checkQuestions(text);
 
     if (firstState.questions[1].getAnswer() != ""){
         updateBackgroundColor(firstState.questions[1].getAnswer());
+    }
+    if (firstState.questions[2].getAnswer() != ""){
+        displayTitle(firstState.questions[2].getAnswer());
     }
     addChatEntry(input, response);
 
@@ -114,7 +118,7 @@ async function addChatEntry(input, response) {
 
         messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;
-        await delay(2000);
+        //await delay(2000);
         botText.innerText = `${response[i]}`;
     }
 
