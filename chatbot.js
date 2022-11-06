@@ -6,8 +6,8 @@ let question1 = new Question();
 question1.setQuestion("What's your name?");
 question1.setValidAnswers([]);
 question1.setFilterPhrases(["my name is ", "my names ", "the names ", "names ", " is my name", "it is ",
-                            "that is ", "that would be ", "i'm ", "call me ", "i am ", "they call me ",
-                            "you can call me ", "its'a me ", " is my name"]);
+                            "that is ", "that would be ", "call me ", "i am ", "they call me ",
+                            "you can call me ", " is my name"]);
 
 
 let question2 = new Question();
