@@ -42,7 +42,6 @@ function setup(){
 	updateField("pageTitle", changePageTitle);
 
 	if (state == "1"){
-		
 
 
 	}

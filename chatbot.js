@@ -1,29 +1,6 @@
 
 const inputField = document.getElementById("input");
 
-//begin information exclusive to state 1 ----------------------------------------------------
-let question1 = new Question();
-question1.setQuestion("What's your name?");
-question1.setValidAnswers([]);
-question1.setFilterPhrases(["my name is ", "my names ", "the names ", "names ", " is my name", "it is ",
-                            "that is ", "that would be ", "call me ", "i am ", "they call me ",
-                            "you can call me ", " is my name"]);
-
-
-let question2 = new Question();
-question2.setQuestion("What's your favorite color?");
-question2.setValidAnswers(["red", "blue", "purple", "yellow", "pink", "green", "orange",
-                           "lime", "aqua", "navy", "coral", "teal", "mustard",
-                           "violet", "black", "white", "grey", "gray", "brown",
-                           "indigo", "peach", "maroon", "magenta"]);
-question2.setFilterPhrases(["my favorite color is ", " is my favorite color", " is the color", "the color is ",
-                            "it is ", "that is ", "that would be ", "probably ", "obviously "]);
-
-const firstState = new State();
-firstState.setName("Introduction");
-firstState.setQuestions(question1);
-firstState.setQuestions(question2);
-
 //function to change user name cookie
 function updateUserName(name) {
     setCookie("userName", name, 30);
@@ -36,10 +13,8 @@ function updateBackgroundColor(color) {
 }
 
 
-//end info for state 1 ---------------------------------------------------------------------
-
 //initialized chat entry
-addChatEntry("", "What's your name?");
+addChatEntry("", ["What's your name?"]);
 
 
 
@@ -125,13 +100,18 @@ function parse(input) {
     if (firstState.questions[1].getAnswer() != ""){
         updateBackgroundColor(firstState.questions[1].getAnswer());
     }
-
     addChatEntry(input, response);
+
 }
 
-function addChatEntry(input, response) {
 
-    console.log(input, response);
+function delay(milliseconds){
+    return new Promise(resolve => {
+        setTimeout(resolve, milliseconds);
+    });
+}
+
+async function addChatEntry(input, response) {
     const messagesContainer = document.getElementById("messages");
     let userDiv = document.createElement("div");
     userDiv.id = "user";
@@ -139,17 +119,20 @@ function addChatEntry(input, response) {
     userDiv.innerHTML = `<span>${input}</span>`;
     messagesContainer.appendChild(userDiv);
 
-    let botDiv = document.createElement("div");
-    let botText = document.createElement("span");
-    botDiv.id = "bot";
-    botDiv.className = "bot response";
-    botDiv.appendChild(botText);
-    messagesContainer.appendChild(botDiv);
 
-    messagesContainer.scrollTop =
-    messagesContainer.scrollHeight - messagesContainer.clientHeight;
 
-    setTimeout(() => {
-        botText.innerText = `${response}`;
-    }, 2000);
+    for (var i = 0; i < response.length; i++) { //Loop for each line in the chatbot response
+        let botDiv = document.createElement("div");
+        let botText = document.createElement("span");
+        botDiv.id = "bot";
+        botDiv.className = "bot response";
+        botDiv.appendChild(botText);
+        messagesContainer.appendChild(botDiv);
+
+        messagesContainer.scrollTop =
+        messagesContainer.scrollHeight - messagesContainer.clientHeight;
+        await delay(2000);
+        botText.innerText = `${response[i]}`;
+    }
+
 }
