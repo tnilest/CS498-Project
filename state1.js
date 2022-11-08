@@ -1,4 +1,4 @@
-
+let bot = new chatBot();
 let question1 = new Question();
 question1.setQuestion([["What's your name?"]]);
 question1.setValidAnswers([]);
@@ -27,12 +27,12 @@ question3.setFilterPhrases(["the title should be ", "we should call it ", " is t
 let question4 = new Question();
 question4.setQuestion([["What color would you like the text to be?", "Please don't make it the same as your background.", "Thank you..."]]);
 question4.setValidAnswers(["red", "blue", "purple", "yellow", "pink", "green", "orange",
-    "lime", "aqua", "navy", "coral", "teal", "mustard",
+    "lime", "aqua", "navy", "coral", "teal",
     "violet", "black", "white", "grey", "gray", "brown",
-    "indigo", "peach", "maroon", "magenta"]);
+    "indigo", "maroon", "magenta"]);
 question4.setFilterPhrases(["i would like the color to be ", "the color should be ", "set the text to ", "the text color should be ", "set the text to ",
 "make it ", " is the color", "color it ", "paint it ", "set the color to "]);
-question4.setReply({"red": "Bad", "else": "Good"});
+question4.setReply({"red": ["Bad", -2], "else": ["Good", 2]});
 
 let question5 = new Question();
 question5.setQuestion([["What would you like to call me?"]]);
@@ -46,6 +46,7 @@ firstState.setQuestions(question2);
 firstState.setQuestions(question3);
 firstState.setQuestions(question4);
 firstState.setQuestions(question5);
+bot.addState(firstState);
 
 //function to change background color
 function updateBackgroundColor(color) {
