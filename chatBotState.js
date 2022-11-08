@@ -173,4 +173,8 @@ class chatBot {
     getMood() {
         return this.mood;
     }
+
+    addState(state) {
+        this.states.push(state);
+    }
 }

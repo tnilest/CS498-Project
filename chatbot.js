@@ -92,7 +92,6 @@ function parse(input) {
                 .replace(/^thx$/g, "thanks");
 
     //Determine what output should be sent
-    //reply = firstState.checkReplies(text);
     response = firstState.checkQuestions(text);
 
     if (firstState.questions[0].getAnswer() != ""){
