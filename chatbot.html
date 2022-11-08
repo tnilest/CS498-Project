@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Chatbot</title>
-        <link rel="stylesheet" href="styles.css">
+	<head>
+		<meta charset="UTF-8">
+		<title>Chatbot</title>
+		<link rel="stylesheet" href="styles.css">
+	</head>
 
-    </head>
-    <body>
-        <div id="face" class="face">( ° ͟ʖ °)</div>
-        <h1 class="h4" id="title"></h1>
+	<body onload="setup()">
+		<button onclick="deleteAllCookies()">Delete cookies</button>
+		<button onclick="getCookiesDict()">Log cookies</button>
+		<button onclick='incrementCookie("state",1)'>Increment state</button>
+		<button onclick='setCookie("pageTitle","Test", 30)'>Set Title</button>
+    <div id="face" class="face">( ° ͟ʖ °)</div>
+    <h1 class="h4" id="title"></h1>
+		<div id="container" class="container">
+			<div id="chat" class="chat">
+				<div id="messages" class="messages"></div>
+				<input id="input" type="text" autocomplete="off" autofocus="true" />
+			</div>
+		</div>
 
-        <div id="container" class="container">
-            
-            <div id="chat" class="chat">
-                <div id="messages" class="messages"></div>
-                <input id="input" type="text" autocomplete="off" autofocus="true" />
-            </div>
-        </div>
-        <script type="text/javascript" src="chatBotState.js"></script>
-        <script type="text/javascript" src="chatbot.js"></script>
-        <script type="text/javascript" src="state1.js"></script>
+		
+	</body>
+	<script type="text/javascript" src="cookies.js"></script> <!-- keep this first -->
+	<script type="text/javascript" src="chatBotState.js"></script>
+	<script type="text/javascript" src="chatbot.js"></script>
+	<script type="text/javascript" src="setup.js"></script>
 
-    </body>
 </html>
 

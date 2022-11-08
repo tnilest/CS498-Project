@@ -7,7 +7,11 @@ async function updateBodyInnerHTMLByState(stateNumber) {
 }
 
 function changeBackgroundColor(color){
-	document.body.style.backgroundColor = color
+	document.body.style.backgroundColor = color;
+}
+
+function changePageTitle(title){
+	document.title = title;
 }
 
 function updateField(cookieName, foo){
@@ -24,11 +28,20 @@ function updateField(cookieName, foo){
 
 function setup(){
 	let state = checkState();
-	console.log(state);
+	// initialize mood if needed
+	let mood = getCookieVal("mood");
+	if (mood != "" && mood != null) {
+		return state;
+	} else {
+		setCookie("mood", 0, 30);
+	}
+
+	// background color
+	updateField("backgroundColor", changeBackgroundColor);
+	// title
+	updateField("pageTitle", changePageTitle);
 
 	if (state == "1"){
-		// background color
-		updateField("backgroundColor", changeBackgroundColor);
 
 
 	}
