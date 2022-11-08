@@ -1,6 +1,18 @@
 
 const inputField = document.getElementById("input");
 
+//function to change user name cookie
+function updateUserName(name) {
+    setCookie("userName", name, 30);
+}
+
+//function to change background color
+function updateBackgroundColor(color) {
+    setCookie("backgroundColor", color, 30);
+    document.body.style.backgroundColor = color;
+}
+
+
 //initialized chat entry
 addChatEntry("", ["What's your name?"]);
 
@@ -11,6 +23,7 @@ inputField.addEventListener("keydown", (e) => {
     if (e.code === "Enter") {
         let input = inputField.value;
         inputField.value = "";
+        input = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         parse(input);
     }
 });
@@ -82,6 +95,9 @@ function parse(input) {
     //reply = firstState.checkReplies(text);
     response = firstState.checkQuestions(text);
 
+    if (firstState.questions[0].getAnswer() != ""){
+        updateUserName(firstState.questions[0].getAnswer());
+    }
     if (firstState.questions[1].getAnswer() != ""){
         updateBackgroundColor(firstState.questions[1].getAnswer());
     }
@@ -91,6 +107,7 @@ function parse(input) {
     addChatEntry(input, response);
 
 }
+
 
 function delay(milliseconds){
     return new Promise(resolve => {
