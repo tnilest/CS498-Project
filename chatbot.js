@@ -42,8 +42,8 @@ inputField.addEventListener("keydown", (e) => {
     if (e.code === "Enter") {
         let input = inputField.value;
         inputField.value = "";
-        var encodedInput = $('<div />').text(input).html();
-        parse(encodedInput);
+        input = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        parse(input);
     }
 });
 
@@ -121,6 +121,8 @@ function parse(input) {
 }
 
 function addChatEntry(input, response) {
+
+    console.log(input, response);
     const messagesContainer = document.getElementById("messages");
     let userDiv = document.createElement("div");
     userDiv.id = "user";
