@@ -7,6 +7,7 @@ class Question {
         this.answer = '';
         this.validAnswers = [];
         this.filterPhrases = [];
+        this.reply = {};
     }
 
     setQuestion(newQuestion){
@@ -23,6 +24,10 @@ class Question {
 
     setFilterPhrases(phrases){
         this.filterPhrases = phrases;
+    }
+
+    setReply(replies) {
+        this.reply = replies;
     }
 
     getQuestion() {
@@ -56,6 +61,10 @@ class Question {
         return this.filterPhrases;
     }
 
+    getReply(){
+        return this.reply;
+    }
+
     filter(answer){
         var phrases = this.filterPhrases;
         for (var i = 0; i < phrases.length; i++) {
@@ -65,6 +74,18 @@ class Question {
         }
         return answer;
     }
+
+    getReplies(answer) {
+        var reply = this.getReply();
+        if (Object.keys(reply).length == 0) {
+            return [];
+        }
+        for(var text in reply) {
+            if (answer == text || text=="else") {
+                return [reply[text]];
+            }
+        }
+    }
 }
 
 class State {
@@ -73,6 +94,7 @@ class State {
         this.questions = [];
         this.stateName = "";
         this.nextState = null;
+        this.currentQuestion = 0;
     }
 
     setName(newName){
@@ -91,42 +113,47 @@ class State {
         return this.questions;
     }
 
+    getIndex() {
+        return this.currentQuestion;
+    }
+
+    incrementIndex() {
+        this.currentQuestion += 1;
+    }
+
     checkQuestions(answer){
         var questions = this.getQuestions();
         var found = false;
-        var question = [];
-        for (var i = 0; i < questions.length; i++) { //Check each question in this state
-            if (found == true) {
-                question = questions[i].getQuestion(); //Return the next question after finding the current one
-                break;
+        var index = this.getIndex();
+        if (index < questions.length ) {
+            var validAnswers = questions[index].getValidAnswers();
+            var filteredAnswer = questions[index].filter(answer);
+            if (validAnswers.length == 0) {
+                questions[index].setAnswer(filteredAnswer); //Set the answer to that question
+                found = true;
             }
-            if (questions[i].getAnswer() == "") { //If no answer has been set yet, then this is the question we want
-                var validAnswers = questions[i].getValidAnswers();
-                var filteredAnswer = questions[i].filter(answer);
-                if (validAnswers.length == 0) {
-                    questions[i].setAnswer(filteredAnswer); //Set the answer to that question
-                    found = true;
-                }
-                else {
-                    for (var j = 0; j < validAnswers.length; j++) { //Loop through expected answers for this question
-                        if (filteredAnswer == validAnswers[j]) { //If it's a valid answer
-                            questions[i].setAnswer(filteredAnswer); //Set the answer to that question
-                            found = true;
-                            break;
-                        }
+            else {
+                for (var j = 0; j < validAnswers.length; j++) { //Loop through expected answers for this question
+                    if (filteredAnswer == validAnswers[j]) { //If it's a valid answer
+                        questions[index].setAnswer(filteredAnswer); //Set the answer to that question
+                        found = true;
+                        break;
                     }
                 }
-                if (found == false) { //If it was not a valid answer
-                    question = ["Try again"];
-                }
-                if (found == true && i == questions.length-1) { //If we've answered all questions of this state
-                    question = ["next state"];
+                if (found == false) {
+                    return ["Try again"];
                 }
             }
+            var replies = questions[index].getReplies(filteredAnswer);
+            this.incrementIndex();
+            index += 1;
+            var question = questions[index].getQuestion();
+            return replies.concat(question);
         }
-        return question;
+        else {
+            return ["next state"];
+        }
     }
-
 }
 
 class chatBot {

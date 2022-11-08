@@ -32,6 +32,7 @@ question4.setValidAnswers(["red", "blue", "purple", "yellow", "pink", "green", "
     "indigo", "peach", "maroon", "magenta"]);
 question4.setFilterPhrases(["i would like the color to be ", "the color should be ", "set the text to ", "the text color should be ", "set the text to ",
 "make it ", " is the color", "color it ", "paint it ", "set the color to "]);
+question4.setReply({"red": "Bad", "else": "Good"});
 
 let question5 = new Question();
 question5.setQuestion([["What would you like to call me?"]]);
