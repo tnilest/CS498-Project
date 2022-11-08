@@ -24,11 +24,17 @@ firstState.setName("Introduction");
 firstState.setQuestions(question1);
 firstState.setQuestions(question2);
 
+//function to change user name cookie
+function updateUserName(name) {
+    setCookie("userName", name, 30);
+}
+
 //function to change background color
 function updateBackgroundColor(color) {
     setCookie("backgroundColor", color, 30);
     document.body.style.backgroundColor = color;
 }
+
 
 //end info for state 1 ---------------------------------------------------------------------
 
@@ -113,6 +119,9 @@ function parse(input) {
     //Determine what output should be sent
     response = firstState.checkQuestions(text);
 
+    if (firstState.questions[0].getAnswer() != ""){
+        updateUserName(firstState.questions[0].getAnswer());
+    }
     if (firstState.questions[1].getAnswer() != ""){
         updateBackgroundColor(firstState.questions[1].getAnswer());
     }
