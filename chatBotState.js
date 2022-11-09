@@ -32,7 +32,6 @@ class Question {
 
     getQuestion() {
         var mood = getCookieVal("mood");
-        console.log(mood);
         if (this.question.length == 1) {
             return this.question[0];
         }

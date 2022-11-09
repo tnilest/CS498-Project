@@ -100,6 +100,10 @@ function parse(input) {
         color = changeTitleColor(firstState.questions[3].getAnswer());
         response = color.concat(response);
     }
+    if (index == 5){
+        name = setBotName(firstState.questions[4].getAnswer());
+        response = name.concat(response);
+    }
     addChatEntry(input, response);
 
 }
@@ -121,6 +125,12 @@ function addInput(input) {
 }
 
 async function addChatEntry(input, allResponse) {
+    let name = getCookieVal("botName");
+    let botName = false;
+    if (name != '') {
+        botName = true;
+
+    }
     const messagesContainer = document.getElementById("messages");
     var response = allResponse.split("\n");
 
@@ -131,6 +141,11 @@ async function addChatEntry(input, allResponse) {
         botDiv.className = "bot response";
         botDiv.appendChild(botText);
         messagesContainer.appendChild(botDiv);
+
+        if (botName) {
+            opening = "(" + name + "): ";
+            response[i] = opening.concat(response[i]);
+        }
 
         messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;

@@ -22,7 +22,7 @@ let question3 = new Question();
 question3.setQuestion(["How about a title? Every webpage needs a good title.\nWhat should we call this one?"]);
 question3.setValidAnswers([]);
 question3.setFilterPhrases(["the title should be ", "we should call it ", " is the title", "the title is ", "it should be ",
-    "probably ", "obviously ", "make it ", "set it to ", "call it ", "you should call it "]);
+    "probably ", "obviously ", "make it ", "set it to ", "call it ", "you should call it ", "this title should be "]);
 
 let question4 = new Question();
 question4.setQuestion(["Now what color should that title be?\nOf course, you wouldn't want it to be the same as the background color, now would you?"]);
@@ -35,7 +35,7 @@ question4.setFilterPhrases(["i would like the color to be ", "the color should b
 //question4.setReply({"red": ["Bad", -2], "else": ["Good", 2]});
 
 let question5 = new Question();
-question5.setQuestion(["I guess I need a name too.\nHave one in mind?"]);
+question5.setQuestion(["Well, I guess I need a name too.\nHave one in mind?"]);
 question5.setValidAnswers([]);
 question5.setFilterPhrases(["i hereby dub you ", "your name is ", "you should be called ", "i will name you ", "i will call you ", " is your name", "you are "
     , "how about ", "what about ", "it should be ", "you should be ", "i would like to call you ", "from now on you should be ", "call yourself "]);
@@ -83,4 +83,9 @@ function changeTitleColor(color) {
         incrementCookie("mood", 2);
         return "Way to follow directions.\n";
     }
+}
+
+function setBotName(name) {
+    setCookie("botName", name, 30);
+    return "I like it.\n"
 }
