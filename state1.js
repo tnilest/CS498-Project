@@ -57,6 +57,7 @@ bot.addState(firstState);
 
 //function to change user name cookie
 function updateUserName(name) {
+    name = name.charAt(0).toUpperCase() + name.slice(1);
     setCookie("userName", name, 30);
     name = name.concat(", eh? Good name.\n");
     return name;
@@ -66,7 +67,7 @@ function updateUserName(name) {
 function updateBackgroundColor(color) {
     setCookie("backgroundColor", color, 30);
     document.body.style.backgroundColor = color;
-    if(color == "black"){
+    if(color == "black" || color == "navy" || color == "blue"){
         let face = document.getElementById("face");
         let title = document.getElementById("title");
         face.style.color = "white";

@@ -84,6 +84,8 @@ function parse(input) {
     response = firstState.checkQuestions(text);
     var index = firstState.getIndex();
 
+
+
     addInput(input);
     if (index == 1){
         name = updateUserName(firstState.questions[0].getAnswer());
@@ -105,13 +107,15 @@ function parse(input) {
         response = name.concat(response);
     }
 
-    if (firstState.questions[2].getAnswer() != ""){
-        displayTitle(firstState.questions[2].getAnswer());
+    var mood = getCookieVal("mood");
+    if (mood < 0) {
+        document.getElementById("face").textContent = "( ͡ಠ ʖ̯ ͡ಠ)";
     }
-
-    //update text color based on response to state1 question4
-    if (firstState.questions[3].getAnswer() != "") {
-        changeTitleColor(firstState.questions[3].getAnswer());
+    else if (mood > 0) {
+        document.getElementById("face").textContent = "( ͡^ ͜ʖ ͡^ )";
+    }
+    else {
+        document.getElementById("face").textContent = "( ° ͟ʖ °)";
     }
 
 
@@ -160,13 +164,8 @@ async function addChatEntry(input, allResponse) {
 
         messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;
-        //await delay(2000);
-        if (firstState.questions[4].getAnswer() != "") {
-            botText.innerText = "(" + firstState.questions[4].getAnswer() + "): " +  `${response[i]}`;
-        }
-        else {
-            botText.innerText = `${response[i]}`;
-        }
+        await delay(1000);
+        botText.innerText = `${response[i]}`;
         
     }
 
