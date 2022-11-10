@@ -23,13 +23,14 @@ function getCookieVal(cookieName) {
 	return "";
 }
 
-function checkCookie() {
-	let stage = getCookieVal("stage");
-	if (stage != "" && stage != null) {
-		alert("Your stage " + stage);
+function checkState() {
+	let state = getCookieVal("state");
+	if (state != "" && state != null) {
+		return state;
 	} else {
-		deleteAllCookies(); // delete all cookies if the stage cookie has been unset
-		setCookie("stage", 1, 30);
+		deleteAllCookies(); // delete all cookies if the state cookie has been unset
+		setCookie("state", 1, 30);
+		return "1";
 	}
 }
 
@@ -98,3 +99,4 @@ function getFloatFromCookie(cookieName){
 		return cookieVal;
 	return false;
 }
+
