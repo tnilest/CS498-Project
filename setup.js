@@ -14,7 +14,7 @@ function setupChangePageTitle(title){
 	document.getElementById("title").textContent = title;
 }
 
-function setupChangeTitleColor(title){
+function setupChangeTitleColor(color){
 	document.getElementById("title").style.color = color;
 }
 
