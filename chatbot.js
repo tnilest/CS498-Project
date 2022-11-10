@@ -111,7 +111,7 @@ function parse(input) {
 
     //update text color based on response to state1 question4
     if (firstState.questions[3].getAnswer() != "") {
-        updateTitleColor(firstState.questions[3].getAnswer());
+        changeTitleColor(firstState.questions[3].getAnswer());
     }
 
 

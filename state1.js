@@ -78,11 +78,13 @@ function updateBackgroundColor(color) {
 
 
 function displayTitle(title) {
-     document.getElementById("title").textContent = title;
+    setCookie("pageTitle", title, 30)
+    document.getElementById("title").textContent = title;
 }
 
 
 function changeTitleColor(color) {
+    setCookie("titleColor", color, 30)
     document.getElementById("title").style.color = color;
     bColor = getCookieVal("backgroundColor");
     if (color == bColor) {
