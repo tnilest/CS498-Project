@@ -164,7 +164,7 @@ async function addChatEntry(input, allResponse) {
 
         messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;
-        //await delay(2000);
+        await delay(1000);
         botText.innerText = `${response[i]}`;
         
     }
