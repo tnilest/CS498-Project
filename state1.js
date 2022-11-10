@@ -57,6 +57,7 @@ bot.addState(firstState);
 
 //function to change user name cookie
 function updateUserName(name) {
+    name = name.charAt(0).toUpperCase() + name.slice(1);
     setCookie("userName", name, 30);
     name = name.concat(", eh? Good name.\n");
     return name;
