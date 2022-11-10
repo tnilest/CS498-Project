@@ -25,6 +25,7 @@ question3.setFilterPhrases(["the title should be ", "we should call it ", " is t
     "probably ", "obviously ", "make it ", "set it to ", "call it ", "you should call it ", "this title should be "]);
 
 let question4 = new Question();
+
 question4.setQuestion(["Now what color should that title be?\nOf course, you wouldn't want it to be the same as the background color, now would you?"]);
 question4.setValidAnswers(["red", "blue", "purple", "yellow", "pink", "green", "orange",
     "lime", "aqua", "navy", "coral", "teal",
@@ -65,13 +66,21 @@ function updateUserName(name) {
 function updateBackgroundColor(color) {
     setCookie("backgroundColor", color, 30);
     document.body.style.backgroundColor = color;
+    if(color == "black"){
+        let face = document.getElementById("face");
+        let title = document.getElementById("title");
+        face.style.color = "white";
+        title.style.color = "white";
+    }
     response = "Pretty cool, huh?\nI can change anything you want about this website.\n"
     return response;
 }
 
+
 function displayTitle(title) {
-     document.getElementById("title").textContent += title;
+     document.getElementById("title").textContent = title;
 }
+
 
 function changeTitleColor(color) {
     document.getElementById("title").style.color = color;
