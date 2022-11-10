@@ -6,15 +6,21 @@ async function updateBodyInnerHTMLByState(stateNumber) {
     document.body.innerHTML = data;
 }
 
-function changeBackgroundColor(color){
+function setupChangeBackgroundColor(color){
 	document.body.style.backgroundColor = color;
 }
 
-function changePageTitle(title){
-	document.title = title;
+function setupChangePageTitle(title){
+	document.getElementById("title").textContent = title;
 }
 
+function setupChangeTitleColor(title){
+	document.getElementById("title").style.color = color;
+}
+
+
 function updateField(cookieName, foo){
+	console.log("changing " + cookieName);
 	let val = getCookieVal(cookieName);
 	if (val != "" && val != null){
 		try{
@@ -27,19 +33,22 @@ function updateField(cookieName, foo){
 
 
 function setup(){
+	console.log("asdf")
 	let state = checkState();
 	// initialize mood if needed
 	let mood = getCookieVal("mood");
-	if (mood != "" && mood != null) {
-		return state;
-	} else {
+	if (mood == "" || mood == null) {
+		console.log(mood);
 		setCookie("mood", 0, 30);
 	}
+	else console.log("no mood");
 
 	// background color
-	updateField("backgroundColor", changeBackgroundColor);
+	updateField("backgroundColor", setupChangeBackgroundColor);
 	// title
-	updateField("pageTitle", changePageTitle);
+	updateField("pageTitle", setupChangePageTitle);
+	// title color
+	updateField("titleColor", setupChangeTitleColor);
 
 	if (state == "1"){
 
