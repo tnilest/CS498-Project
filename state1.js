@@ -66,7 +66,7 @@ function updateUserName(name) {
 function updateBackgroundColor(color) {
     setCookie("backgroundColor", color, 30);
     document.body.style.backgroundColor = color;
-    if(color == "black"){
+    if(color == "black" || color == "navy" || color == "blue"){
         let face = document.getElementById("face");
         let title = document.getElementById("title");
         face.style.color = "white";
