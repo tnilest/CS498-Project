@@ -1,20 +1,9 @@
 
 const inputField = document.getElementById("input");
 
-//function to change user name cookie
-function updateUserName(name) {
-    setCookie("userName", name, 30);
-}
-
-//function to change background color
-function updateBackgroundColor(color) {
-    setCookie("backgroundColor", color, 30);
-    document.body.style.backgroundColor = color;
-}
-
 
 //initialized chat entry
-addChatEntry("", ["What's your name?"]);
+addChatEntry("", "Hey there, you.\nWhat's your name?");
 
 
 
@@ -93,15 +82,27 @@ function parse(input) {
 
     //Determine what output should be sent
     response = firstState.checkQuestions(text);
+    var index = firstState.getIndex();
 
-    if (firstState.questions[0].getAnswer() != ""){
-        updateUserName(firstState.questions[0].getAnswer());
+    addInput(input);
+    if (index == 1){
+        name = updateUserName(firstState.questions[0].getAnswer());
+        response = name.concat(response);
     }
-    if (firstState.questions[1].getAnswer() != ""){
-        updateBackgroundColor(firstState.questions[1].getAnswer());
+    if (index == 2){
+        color = updateBackgroundColor(firstState.questions[1].getAnswer());
+        response = color.concat(response);
     }
-    if (firstState.questions[2].getAnswer() != ""){
+    if (index == 3){
         displayTitle(firstState.questions[2].getAnswer());
+    }
+    if (index == 4){
+        color = changeTitleColor(firstState.questions[3].getAnswer());
+        response = color.concat(response);
+    }
+    if (index == 5){
+        name = setBotName(firstState.questions[4].getAnswer());
+        response = name.concat(response);
     }
     addChatEntry(input, response);
 
@@ -114,15 +115,24 @@ function delay(milliseconds){
     });
 }
 
-async function addChatEntry(input, response) {
+function addInput(input) {
     const messagesContainer = document.getElementById("messages");
     let userDiv = document.createElement("div");
     userDiv.id = "user";
     userDiv.className = "user response";
     userDiv.innerHTML = `<span>${input}</span>`;
     messagesContainer.appendChild(userDiv);
+}
 
+async function addChatEntry(input, allResponse) {
+    let name = getCookieVal("botName");
+    let botName = false;
+    if (name != '') {
+        botName = true;
 
+    }
+    const messagesContainer = document.getElementById("messages");
+    var response = allResponse.split("\n");
 
     for (var i = 0; i < response.length; i++) { //Loop for each line in the chatbot response
         let botDiv = document.createElement("div");
@@ -132,9 +142,14 @@ async function addChatEntry(input, response) {
         botDiv.appendChild(botText);
         messagesContainer.appendChild(botDiv);
 
+        if (botName) {
+            opening = "(" + name + "): ";
+            response[i] = opening.concat(response[i]);
+        }
+
         messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;
-        //await delay(2000);
+        await delay(2000);
         botText.innerText = `${response[i]}`;
     }
 

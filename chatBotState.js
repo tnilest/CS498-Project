@@ -7,7 +7,7 @@ class Question {
         this.answer = '';
         this.validAnswers = [];
         this.filterPhrases = [];
-        this.reply = {};
+        //this.reply = {};
     }
 
     setQuestion(newQuestion){
@@ -26,27 +26,26 @@ class Question {
         this.filterPhrases = phrases;
     }
 
-    setReply(replies) {
-        this.reply = replies;
-    }
+//    setReply(replies) {
+//        this.reply = replies;
+//    }
 
     getQuestion() {
-        return this.question[0];
-//        if (this.question.length == 1) {
-//            return this.question[0];
-//        }
-//        else {
-//            if (mood < -1) {
-//                return this.question[1];
-//            }
-//            else if (mood > 1) {
-//                return this.question[2];
-//            }
-//            else {
-//                return this.question[0];
-//            }
-//        }
-//        //return this.question;
+        var mood = getCookieVal("mood");
+        if (this.question.length == 1) {
+            return this.question[0];
+        }
+        else {
+            if (mood < -1) {
+                return this.question[1];
+            }
+            else if (mood > 1) {
+                return this.question[2];
+            }
+            else {
+                return this.question[0];
+            }
+        }
     }
 
     getAnswer() {
@@ -61,9 +60,9 @@ class Question {
         return this.filterPhrases;
     }
 
-    getReply(){
-        return this.reply;
-    }
+//    getReply(){
+//        return this.reply;
+//    }
 
     filter(answer){
         var phrases = this.filterPhrases;
@@ -75,17 +74,17 @@ class Question {
         return answer;
     }
 
-    getReplies(answer) {
-        var reply = this.getReply();
-        if (Object.keys(reply).length == 0) {
-            return [];
-        }
-        for(var text in reply) {
-            if (answer == text || text=="else") {
-                return [reply[text]];
-            }
-        }
-    }
+//    getReplies(answer) {
+//        var reply = this.getReply();
+//        if (Object.keys(reply).length == 0) {
+//            return [];
+//        }
+//        for(var text in reply) {
+//            if (answer == text || text=="else") {
+//                return reply[text];
+//            }
+//        }
+//    }
 }
 
 class State {
@@ -141,17 +140,25 @@ class State {
                     }
                 }
                 if (found == false) {
-                    return ["Try again"];
+                    return "I didn't understand that one.";
                 }
             }
-            var replies = questions[index].getReplies(filteredAnswer);
+//            var replies = questions[index].getReplies(filteredAnswer);
+//            console.log(replies);
+//            var response = "";
+//            if (replies.length != 0) {
+//                response = response.concat(replies[0]);
+//                response = response.concat("\n");
+//                var moodChange = replies[1];
+//                incrementCookie("mood", moodChange);
+//            }
             this.incrementIndex();
             index += 1;
-            var question = questions[index].getQuestion();
-            return replies.concat(question);
+            //var response = response.concat(questions[index].getQuestion());
+            return questions[index].getQuestion();
         }
         else {
-            return ["next state"];
+            return "next state";
         }
     }
 }
