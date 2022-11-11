@@ -1,6 +1,7 @@
 let bot = new chatBot();
 let question1 = new Question();
-question1.setQuestion(["What's your name?"]);
+question1.question = ["What's your name?"]
+question1.setQuestion(question1.getQuestion());
 question1.setValidAnswers([]);
 question1.setFilterPhrases(["my name is ", "my names ", "the names ", "names ", " is my name", "it is ",
                             "that is ", "that would be ", "call me ", "i am ", "they call me ",
@@ -9,7 +10,8 @@ question1.setFilterPhrases(["my name is ", "my names ", "the names ", "names ", 
 
 let question2 = new Question();
 
-question2.setQuestion(["What's your favorite color?"]);
+question2.question = ["What's your favorite color?", "What's your favorite color?\nLet me guess. Is it red?\nYou look pretty basic", "What's your favorite color?\nI want to make your experience more enjoyable :)"]
+question2.setQuestion(question2.getQuestion());
 
 question2.setValidAnswers(["red", "blue", "purple", "yellow", "pink", "green", "orange",
                            "lime", "aqua", "navy", "coral", "teal",
@@ -19,14 +21,17 @@ question2.setFilterPhrases(["my favorite color is ", " is my favorite color", " 
                             "it is ", "that is ", "that would be ", "probably ", "obviously "]);
 
 let question3 = new Question();
-question3.setQuestion(["How about a title? Every webpage needs a good title.\nWhat should we call this one?"]);
+question3.question = ["How about a title? Every webpage needs a good title.\nWhat should we call this one?", "Well you aren't exactly the creative type but whatever.\nHow about a title? Every webpage needs a title.\nWhat should we call this one?", "This one is a fun one.\nHow about a title? Every webpage needs a great title.\nWhat should we call this one?"]
+question3.setQuestion(question3.getQuestion());
+
 question3.setValidAnswers([]);
 question3.setFilterPhrases(["the title should be ", "we should call it ", " is the title", "the title is ", "it should be ",
     "probably ", "obviously ", "make it ", "set it to ", "call it ", "you should call it ", "this title should be "]);
 
 let question4 = new Question();
 
-question4.setQuestion(["Now what color should that title be?\nOf course, you wouldn't want it to be the same as the background color, now would you?"]);
+question4.question = ["Now what color should that title be?\nOf course, you wouldn't want it to be the same as the background color, now would you?", "Now what color should that title be?\nOf course, you would want it to be the same as the background color, now would you?\nI don't expect better from a person like you.", "Now what color should that title be?\nOf course, I leave the decision in your capable hands."]
+question4.setQuestion(question4.getQuestion());
 question4.setValidAnswers(["red", "blue", "purple", "yellow", "pink", "green", "orange",
     "lime", "aqua", "navy", "coral", "teal",
     "violet", "black", "white", "grey", "gray", "brown",
@@ -36,7 +41,8 @@ question4.setFilterPhrases(["i would like the color to be ", "the color should b
 //question4.setReply({"red": ["Bad", -2], "else": ["Good", 2]});
 
 let question5 = new Question();
-question5.setQuestion(["Well, I guess I need a name too.\nHave one in mind?"]);
+question5.question = ["Well, I guess I need a name too.\nHave one in mind?", "God I hate that I have to ask you this.\nWell...I guess I need a name too.\nHave one in mind?\nPlease don't embarrass me or yourself.", "I trust you on this one.\nI need a name too.\nHave one in mind?"]
+question5.setQuestion(question5.getQuestion());
 question5.setValidAnswers([]);
 question5.setFilterPhrases(["i hereby dub you ", "your name is ", "you should be called ", "i will name you ", "i will call you ", " is your name", "you are "
     , "how about ", "what about ", "it should be ", "you should be ", "i would like to call you ", "from now on you should be ", "call yourself "]);
@@ -99,5 +105,17 @@ function changeTitleColor(color) {
 
 function setBotName(name) {
     setCookie("botName", name, 30);
-    return "I like it.\n"
+    var mood = getCookieVal("mood");
+    if (mood < -1) {
+        incrementCookie("mood",2);
+        return "Didn't think you were capable of giving me a good name but I am pleasantly surprised.\n";
+    }
+    else if (mood > 1) {
+        incrementCookie("mood",2);
+        return "I love it. I knew I could trust you.\n";
+    }
+    else {
+        incrementCookie("mood",2);
+        return "I like it.\n"
+    }
 }
