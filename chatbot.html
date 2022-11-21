@@ -7,13 +7,18 @@
 	</head>
 
 	<body onload="setup()">
-		<!--<button onclick="deleteAllCookies()">Delete cookies</button>
-		<button onclick="getCookiesDict()">Log cookies</button>
+		<button onclick="deleteAllCookies()">Delete cookies</button>
+		<!--<button onclick="getCookiesDict()">Log cookies</button>
 		<button onclick='incrementCookie("state",1)'>Increment state</button>
 		<button onclick='setCookie("pageTitle","Test", 30)'>Set Title</button>-->
-		<div style="text-align:center">
-			<h1 class="h4" id="title"></h1>
+
+		<div id="holder">
+		  	<div id="glitch" style="display: none"></div>
+		  	<div style="text-align:center">
+				<h1 class="h4" id="title"></h1>
+			</div>
 		</div>
+
    		<div id="face" class="face">( ° ͟ʖ °)</div>
 
 		<div id="container" class="container">
@@ -22,12 +27,22 @@
 				<input id="input" type="text" autocomplete="off" autofocus="true" />
 			</div>
 		</div>
+		<div style="text-align:center">
+			<button id="thebutton" class="thebutton" hidden><span id="buttontext">DO NOT PRESS</span></button>
+		</div>
+
+
+
+
 
 		
 	</body>
 	<script type="text/javascript" src="cookies.js"></script> <!-- keep this first -->
 	<script type="text/javascript" src="chatBotState.js"></script>
     <script type="text/javascript" src="state1.js"></script>
+	<script type="text/javascript" src="state2.js"></script>
+	<script type="text/javascript" src="state3.js"></script>
+	<script type="text/javascript" src="zalgo.js"></script>
 	<script type="text/javascript" src="chatbot.js"></script>
 	<script type="text/javascript" src="setup.js"></script>
 

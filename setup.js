@@ -1,9 +1,14 @@
 async function updateBodyInnerHTMLByState(stateNumber) {
+    if (stateNumber == 2){
+        window.location.reload();
+        return;
+    }
 	const fileName = "state"+stateNumber+".html";
 	console.log(fileName);
     let response = await fetch(fileName);
     let data = await response.text();
     document.body.innerHTML = data;
+
 }
 
 function setupChangeBackgroundColor(color){
