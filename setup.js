@@ -1,5 +1,5 @@
 async function updateBodyInnerHTMLByState(stateNumber) {
-    if (stateNumber == 2){
+    if (stateNumber == 3){
         window.location.reload();
         return;
     }

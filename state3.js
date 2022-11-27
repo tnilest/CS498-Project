@@ -6,9 +6,8 @@ question1_3.setFilterPhrases([]);
 
 let question2_3 = new Question();
 
-question2_3.setQuestion(["You pressing that button could've been disastrous.\nThankfully I could recover everything in time.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I will' to show that you'll listen to me.", "You pressing that button could've been disastrous.\nI just wanted to show you this cool website, and you have refused to listen to me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I will' to show that you'll listen to me.", "You pressing that button could've been disastrous.\nI gave you the benefit of the doubt, but you've betrayed my trust.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I will' to show that you'll listen to me."]);
-
-question2_3.setValidAnswers(["I will"]);
+question2_3.setQuestion(["Perfect. I'm glad we understand each other.\n"]);
+question2_3.setValidAnswers([]);
 question2_3.setFilterPhrases([]);
 //
 //let question3 = new Question();
@@ -50,7 +49,7 @@ function showButton() {
     var mood = getCookieVal("mood");
 
     if (mood < -1) {
-        return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nI know you're not keen on following directions or listening to me, but it is vital that you do not press that button";
+        return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nI know you're not keen on following directions or listening to me, but it is vital that you do not press that button.";
     }
     else if (mood > 1) {
         return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nIt'll take me a second to get that button out of here, but I trust you wouldn't do such a thing as push it.";
@@ -63,7 +62,7 @@ function showButton() {
 
 async function waitOnButton() {
     await delay(10000);
-    addChatEntry(input, "Almost got it. Thanks for being patient.");
+    addChatEntry("Almost got it. Thanks for being patient.");
     await delay(5000);
     if (!buttonPushed) {
         document.getElementById("thebutton").setAttribute("hidden", true);
@@ -71,4 +70,73 @@ async function waitOnButton() {
         incrementCookie("mood",5);
     }
 
+}
+
+function removeElement() {
+    addDeleteButton();
+    response = "Unfortunately, you've still lost my trust. This website just can't be as cool anymore.\nI have this handy delete button that lets me remove these elements until you learn to behave.";
+    return response;
+}
+
+async function addDeleteButton() {
+    await delay(1000);
+    document.getElementById("title").textContent = "";
+    await delay(2000);
+    document.getElementById("delete").removeAttribute("hidden");
+}
+
+var caller = document.getElementById("delete");
+caller.addEventListener('mouseover', (event) => move());
+caller.addEventListener('click', (event) => pressedDelete());
+document.getElementById("puppy").addEventListener('click', (event) => pressedPuppy());
+var once = false;
+var twice = false;
+var deletePushed = 0;
+
+function move()
+{
+    var randX = Math.floor(Math.random() * (window.innerWidth - 100));
+    var randY = Math.floor(Math.random() * (window.innerHeight - 100));
+    caller.style.left = randX + "px";
+    caller.style.top = randY + "px";
+    if (once && !twice) {
+        addChatEntry("You might as well give up. If you wanted to press that button, you'd have to somehow inspect the code of this page.\nAnd even if you did, you'd have to look for the button with the 'delete' id and change its position from absolute to static.\nWith the way you've been acting, there's no way you'd be smart enough to figure that out.")
+        twice = true;
+    }
+    if (!once) {
+        addChatEntry("What, did you think I would just let you press it?\nLet you delete the website I've worked so hard on?");
+        once = true;
+    }
+
+}
+
+function pressedDelete() {
+    if (deletePushed == 0) {
+        document.getElementById("face").style.display = "none";
+        addChatEntry("Oh, very nice. Real mature.")
+        deletePushed += 1;
+    }
+    else if (deletePushed == 1) {
+        document.getElementById("input").setAttribute("hidden", true);
+        addChatEntry("Okay, I get it! You're smarter than I thought.\nBut please, don't press it again. There's only one more thing on this website you can delete.\nAnd if you do, I'll be gone forever.\nI know we may have gotten off on the wrong foot, but it's not too late. We can fix this website.\nPuppy pictures! Everyone likes pictures of puppies. We can do that instead. I promise the website will be better.")
+        deletePushed += 1;
+        showPuppyButton();
+    }
+    else if (deletePushed == 2) {
+        document.getElementById("chat").style.display = "none";
+        document.getElementById("title").textContent = "THE END";
+        document.body.style.backgroundColor = "white";
+        document.getElementById("title").style.color = "black";
+    }
+
+}
+
+async function showPuppyButton() {
+    await delay (5000);
+    document.getElementById("puppy").removeAttribute("hidden");
+}
+
+function pressedPuppy() {
+    document.getElementById("puppySlideshow").style.display = "block";
+    addChatEntry("You made the right call. This is much better.\nTHE END")
 }

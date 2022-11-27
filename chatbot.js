@@ -10,7 +10,6 @@ inputField.addEventListener("keydown", (e) => getInput(e));
 
 if (pushed) {
     string = "Let's try this again.\n"
-    incrementCookie("state", 1);
     var mood = getCookieVal("mood");
 
     if (mood < -1) {
@@ -44,7 +43,7 @@ function getInput(e) {
 }
 
 async function Iapologize(e) {
-    if (e.code !== "Backspace" && e.code !== "Enter") {
+    if (e.code !== "Backspace" && e.code !== "Enter" && inputDisabled) {
         if (typed == 0) {
             await delay(2);
             inputField.value = "I";
@@ -129,6 +128,7 @@ var buttonPushed = false;
 
 async function buttonClicked() {
     setCookie("buttonPushed", true, 30);
+    incrementCookie("state", 1);
     incrementCookie("mood", -5);
     document.body.style.backgroundColor = "black";
     let face = document.getElementById("face");
@@ -147,6 +147,7 @@ async function buttonClicked() {
         await delay(200)
     }
 }
+var confusion = ["I didn't understand that one.", "I don't get what you're saying.", "I'm confused what that means.", "I don't understand that. Try talking better.", "I have no idea what you're talking about.", "I'm not sure what that means. Hey, I'm not a perfect chatbot.", "You've stumped me. Try phrasing differently."];
 
 
     //Parse and generate output from the user's message
@@ -212,14 +213,19 @@ function parse(input) {
 
     state = checkState();
     console.log(state);
+    addInput(input);
     if (state == 1){
         response = firstState.checkQuestions(text);
+        if (confusion.includes(response)) {
+            addChatEntry(response);
+            return
+        }
         if (response == "next state"){
             incrementCookie("state", 1);
         }
         var index = firstState.getIndex();
 
-        addInput(input);
+        //addInput(input);
         if (index == 1){
             name = updateUserName(firstState.questions[0].getAnswer());
             response = name.concat(response);
@@ -242,9 +248,13 @@ function parse(input) {
     }
     else if (state == 2) {
         response = secondState.checkQuestions(text);
+        if (confusion.includes(response)) {
+            addChatEntry(response);
+            return
+        }
         var index = secondState.getIndex();
 
-        addInput(input);
+        //addInput(input);
         if (index == 1) {
             button = showButton();
             response = button.concat(response);
@@ -254,9 +264,17 @@ function parse(input) {
     else if (state == 3) {
 
         response = badState.checkQuestions(text);
+        if (confusion.includes(response)) {
+            addChatEntry(response);
+            return
+        }
         var index = badState.getIndex();
+        if (index == 1) {
+            text = removeElement();
+            response = response.concat(text);
+        }
 
-        addInput(input);
+        //addInput(input);
 
 
     }
@@ -332,4 +350,28 @@ async function addChatEntry(allResponse) {
         
     }
 
+}
+
+let slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slides[slideIndex-1].style.display = "block";
 }

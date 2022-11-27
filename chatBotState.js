@@ -139,7 +139,9 @@ class State {
                 }
             }
             if (found == false) {
-                return "I didn't understand that one.";
+                var confusion = ["I didn't understand that one.", "I don't get what you're saying.", "I'm confused what that means.", "I don't understand that. Try talking better.", "I have no idea what you're talking about.", "I'm not sure what that means. Hey, I'm not a perfect chatbot.", "You've stumped me. Try phrasing differently."];
+                var response = confusion[Math.floor(Math.random()*confusion.length)];
+                return response;
             }
         }
         this.incrementIndex();

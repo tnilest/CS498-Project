@@ -18,6 +18,29 @@
 				<h1 class="h4" id="title"></h1>
 			</div>
 		</div>
+		<div class="slideshow-container" id="puppySlideshow" style="display: none">
+
+  <!-- Full-width images with number and caption text -->
+		  <div class="mySlides fade">
+			<img src="puppy.jpg" style="width:100%">
+		  </div>
+
+		  <div class="mySlides fade">
+			<img src="puppy2.jpg" style="width:100%">
+		  </div>
+
+		  <div class="mySlides fade">
+			<img src="puppy3.jpg" style="width:100%">
+		  </div>
+
+		  <div class="mySlides fade">
+			<img src="puppy4.jpg" style="width:100%">
+		  </div>
+
+		  <!-- Next and previous buttons -->
+		  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+		  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+		</div>
 
    		<div id="face" class="face">( ° ͟ʖ °)</div>
 
@@ -27,6 +50,8 @@
 				<input id="input" type="text" autocomplete="off" autofocus="true" />
 			</div>
 		</div>
+		<button id="delete" onclick="pressedDelete" hidden>Delete Element</button>
+		<button id="puppy" hidden>Show Me Puppy Pictures</button>
 		<div style="text-align:center">
 			<button id="thebutton" class="thebutton" hidden><span id="buttontext">DO NOT PRESS</span></button>
 		</div>
