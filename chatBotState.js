@@ -147,7 +147,7 @@ class State {
         this.incrementIndex();
         index += 1;
         if (index == questions.length) {
-            return "next state";
+            return "";
         }
         //var response = response.concat(questions[index].getQuestion());
         return questions[index].getQuestion();

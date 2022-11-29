@@ -60,17 +60,7 @@ function showButton() {
     }
 }
 
-async function waitOnButton() {
-    await delay(10000);
-    addChatEntry("Almost got it. Thanks for being patient.");
-    await delay(5000);
-    if (!buttonPushed) {
-        document.getElementById("thebutton").setAttribute("hidden", true);
-        addChatEntry(input, "There we go! Thanks for not pressing it. That could've been bad.");
-        incrementCookie("mood",5);
-    }
 
-}
 
 function removeElement() {
     addDeleteButton();
