@@ -1,22 +1,153 @@
 
-const inputField = document.getElementById("input");
+var inputField = document.getElementById("input");
 
+var pushed = getCookieVal("buttonPushed");
+var typed = 0;
 
+var inputDisabled = false;
+
+inputField.addEventListener("keydown", (e) => getInput(e));
+
+if (pushed) {
+    string = "Let's try this again.\n"
+    var mood = getCookieVal("mood");
+
+    if (mood < -1) {
+        string += "You pressing that button could've been disastrous.\nI just wanted to show you this cool website, and you have refused to listen to me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+    }
+    else if (mood > 1) {
+        string += "You pressing that button could've been disastrous.\nI gave you the benefit of the doubt, but you've betrayed my trust.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+    }
+    else {
+        string += "You pressing that button could've been disastrous.\nThankfully I could recover everything in time.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again."
+    }
+    addChatEntry(string);
+    inputDisabled = true;
+    inputField.addEventListener("keydown", (e) => Iapologize(e));
+}
+else {
+    addChatEntry("Hey there, you.\nWhat's your name?");
+}
 //initialized chat entry
-addChatEntry("", "Hey there, you.\nWhat's your name?");
-
-
 
 //Event listener for user hitting enter after typing a message
-inputField.addEventListener("keydown", (e) => {
-    if (e.code === "Enter") {
+
+
+function getInput(e) {
+    if (e.code === "Enter" && !inputDisabled) {
         let input = inputField.value;
         inputField.value = "";
         input = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         parse(input);
     }
-});
+}
 
+async function Iapologize(e) {
+    if (e.code !== "Backspace" && e.code !== "Enter" && inputDisabled) {
+        if (typed == 0) {
+            await delay(2);
+            inputField.value = "I";
+            typed += 1;
+        }
+        else if (typed == 1) {
+            await delay(2);
+            inputField.value = "I ";
+            typed += 1;
+        }
+        else if (typed == 2) {
+            await delay(2);
+            inputField.value = "I a";
+            typed += 1;
+        }
+        else if (typed == 3) {
+            await delay(2);
+            inputField.value = "I ap";
+            typed += 1;
+        }
+        else if (typed == 4) {
+            await delay(2);
+            inputField.value = "I apo";
+            typed += 1;
+        }
+        else if (typed == 5) {
+            await delay(2);
+            inputField.value = "I apol";
+            typed += 1;
+        }
+        else if (typed == 6) {
+            await delay(2);
+            inputField.value = "I apolo";
+            typed += 1;
+        }
+        else if (typed == 7) {
+            await delay(2);
+            inputField.value = "I apolog";
+            typed += 1;
+        }
+        else if (typed == 8) {
+            await delay(2);
+            inputField.value = "I apologi";
+            typed += 1;
+        }
+        else if (typed == 9) {
+            await delay(2);
+            inputField.value = "I apologiz";
+            typed += 1;
+        }
+        else if (typed == 10) {
+            await delay(2);
+            inputField.value = "I apologize";
+            typed += 1;
+        }
+        else {
+            await delay(2);
+            inputField.value = "I apologize";
+        }
+    }
+    else if (e.code === "Backspace") {
+        if (typed > 0) {
+            typed -= 1;
+        }
+
+    }
+    else if (e.code === "Enter") {
+        if (typed == 11) {
+            let input = inputField.value;
+            inputField.value = "";
+            input = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            inputDisabled = false;
+            parse(input);
+        }
+    }
+}
+
+var theButton = document.getElementById("thebutton");
+theButton.addEventListener("click", buttonClicked);
+
+var buttonPushed = false;
+
+async function buttonClicked() {
+    setCookie("buttonPushed", true, 30);
+    incrementCookie("state", 1);
+    incrementCookie("mood", -5);
+    document.body.style.backgroundColor = "black";
+    let face = document.getElementById("face");
+    let title = document.getElementById("title");
+    face.style.color = "white";
+    title.style.color = "white";
+    buttonPushed = true;
+    await delay(2000);
+    document.getElementById("glitch").style.display = "block";
+    oldTitle = document.getElementById('title').textContent;
+    for (var i = 0; i < 1000; i++) {
+        document.getElementById('title').textContent = oldTitle;
+        addChatEntry("What are you doing?\nWhy would you push the button?\nI told you not to push the button!\nOh no, the website's breaking now!\nYou have to refresh the page!\nIt's the only way to save the website!\nHurry up! Refresh the page!")
+        await delay(200);
+        document.getElementById('title').textContent = 'REFRESH';
+        await delay(200)
+    }
+}
+var confusion = ["I didn't understand that one.", "I don't get what you're saying.", "I'm confused what that means.", "I don't understand that. Try talking better.", "I have no idea what you're talking about.", "I'm not sure what that means. Hey, I'm not a perfect chatbot.", "You've stumped me. Try phrasing differently."];
 
 
     //Parse and generate output from the user's message
@@ -80,32 +211,75 @@ function parse(input) {
                 .replace(/^np$/g, "no problem")
                 .replace(/^thx$/g, "thanks");
 
-    //Determine what output should be sent
-    response = firstState.checkQuestions(text);
-    var index = firstState.getIndex();
-
-
-
+    state = checkState();
+    console.log(state);
     addInput(input);
-    if (index == 1){
-        name = updateUserName(firstState.questions[0].getAnswer());
-        response = name.concat(response);
+    if (state == 1){
+        response = firstState.checkQuestions(text);
+        if (confusion.includes(response)) {
+            addChatEntry(response);
+            return
+        }
+        if (response == "next state"){
+            incrementCookie("state", 1);
+        }
+        var index = firstState.getIndex();
+
+        //addInput(input);
+        if (index == 1){
+            name = updateUserName(firstState.questions[0].getAnswer());
+            response = name.concat(response);
+        }
+        if (index == 2){
+            color = updateBackgroundColor(firstState.questions[1].getAnswer());
+            response = color.concat(response);
+        }
+        if (index == 3){
+            displayTitle(firstState.questions[2].getAnswer());
+        }
+        if (index == 4){
+            color = changeTitleColor(firstState.questions[3].getAnswer());
+            response = color.concat(response);
+        }
+        if (index == 5){
+            name = setBotName(firstState.questions[4].getAnswer());
+            response = name.concat(response);
+        }
     }
-    if (index == 2){
-        color = updateBackgroundColor(firstState.questions[1].getAnswer());
-        response = color.concat(response);
+    else if (state == 2) {
+        response = secondState.checkQuestions(text);
+        if (confusion.includes(response)) {
+            addChatEntry(response);
+            return
+        }
+        var index = secondState.getIndex();
+
+        //addInput(input);
+        if (index == 1) {
+            button = showButton();
+            response = button.concat(response);
+            waitOnButton();
+        }
     }
-    if (index == 3){
-        displayTitle(firstState.questions[2].getAnswer());
+    else if (state == 3) {
+
+        response = badState.checkQuestions(text);
+        if (confusion.includes(response)) {
+            addChatEntry(response);
+            return
+        }
+        var index = badState.getIndex();
+        if (index == 1) {
+            text = removeElement();
+            response = response.concat(text);
+        }
+
+        //addInput(input);
+
+
     }
-    if (index == 4){
-        color = changeTitleColor(firstState.questions[3].getAnswer());
-        response = color.concat(response);
-    }
-    if (index == 5){
-        name = setBotName(firstState.questions[4].getAnswer());
-        response = name.concat(response);
-    }
+    //Determine what output should be sent
+
 
     var mood = getCookieVal("mood");
     if (mood < 0) {
@@ -119,7 +293,7 @@ function parse(input) {
     }
 
 
-    addChatEntry(input, response);
+    addChatEntry(response);
 
 }
 
@@ -139,7 +313,7 @@ function addInput(input) {
     messagesContainer.appendChild(userDiv);
 }
 
-async function addChatEntry(input, allResponse) {
+async function addChatEntry(allResponse) {
     let name = getCookieVal("botName");
     let botName = false;
     if (name != '') {
@@ -164,9 +338,40 @@ async function addChatEntry(input, allResponse) {
 
         messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;
-        await delay(1000);
-        botText.innerText = `${response[i]}`;
+        if (buttonPushed) {
+            await delay(50);
+            botText.innerText = `${change(response[i])}`;
+        }
+        else {
+            await delay(1000);
+            botText.innerText = `${response[i]}`;
+        }
+
         
     }
 
+}
+
+let slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slides[slideIndex-1].style.display = "block";
 }

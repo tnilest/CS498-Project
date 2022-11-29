@@ -41,7 +41,7 @@ question5.setValidAnswers([]);
 question5.setFilterPhrases(["i hereby dub you ", "your name is ", "you should be called ", "i will name you ", "i will call you ", " is your name", "you are "
     , "how about ", "what about ", "it should be ", "you should be ", "i would like to call you ", "from now on you should be ", "call yourself "]);
 let question6 = new Question();
-question6.setQuestion(["End of demo"]);
+//question6.setQuestion(["End of demo"]);
 const firstState = new State();
 firstState.setName("Introduction");
 firstState.setQuestions(question1);
@@ -49,7 +49,7 @@ firstState.setQuestions(question2);
 firstState.setQuestions(question3);
 firstState.setQuestions(question4);
 firstState.setQuestions(question5);
-firstState.setQuestions(question6);
+//firstState.setQuestions(question6);
 bot.addState(firstState);
 //function to change user name cookie
 function updateUserName(name) {
@@ -92,6 +92,7 @@ function setBotName(name) {
     setCookie("botName", name, 30);
     return "I like it.\n"
     var mood = getCookieVal("mood");
+
     if (mood < -1) {
         incrementCookie("mood",2);
         return "Didn't think you were capable of giving me a good name but I am pleasantly surprised.\n";

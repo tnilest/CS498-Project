@@ -124,42 +124,33 @@ class State {
         var questions = this.getQuestions();
         var found = false;
         var index = this.getIndex();
-        if (index < questions.length ) {
-            var validAnswers = questions[index].getValidAnswers();
-            var filteredAnswer = questions[index].filter(answer);
-            if (validAnswers.length == 0) {
-                questions[index].setAnswer(filteredAnswer); //Set the answer to that question
-                found = true;
-            }
-            else {
-                for (var j = 0; j < validAnswers.length; j++) { //Loop through expected answers for this question
-                    if (filteredAnswer == validAnswers[j]) { //If it's a valid answer
-                        questions[index].setAnswer(filteredAnswer); //Set the answer to that question
-                        found = true;
-                        break;
-                    }
-                }
-                if (found == false) {
-                    return "I didn't understand that one.";
-                }
-            }
-//            var replies = questions[index].getReplies(filteredAnswer);
-//            console.log(replies);
-//            var response = "";
-//            if (replies.length != 0) {
-//                response = response.concat(replies[0]);
-//                response = response.concat("\n");
-//                var moodChange = replies[1];
-//                incrementCookie("mood", moodChange);
-//            }
-            this.incrementIndex();
-            index += 1;
-            //var response = response.concat(questions[index].getQuestion());
-            return questions[index].getQuestion();
+        var validAnswers = questions[index].getValidAnswers();
+        var filteredAnswer = questions[index].filter(answer);
+        if (validAnswers.length == 0) {
+            questions[index].setAnswer(filteredAnswer); //Set the answer to that question
+            found = true;
         }
         else {
+            for (var j = 0; j < validAnswers.length; j++) { //Loop through expected answers for this question
+                if (filteredAnswer == validAnswers[j]) { //If it's a valid answer
+                    questions[index].setAnswer(filteredAnswer); //Set the answer to that question
+                    found = true;
+                    break;
+                }
+            }
+            if (found == false) {
+                var confusion = ["I didn't understand that one.", "I don't get what you're saying.", "I'm confused what that means.", "I don't understand that. Try talking better.", "I have no idea what you're talking about.", "I'm not sure what that means. Hey, I'm not a perfect chatbot.", "You've stumped me. Try phrasing differently."];
+                var response = confusion[Math.floor(Math.random()*confusion.length)];
+                return response;
+            }
+        }
+        this.incrementIndex();
+        index += 1;
+        if (index == questions.length) {
             return "next state";
         }
+        //var response = response.concat(questions[index].getQuestion());
+        return questions[index].getQuestion();
     }
 }
 
