@@ -7,8 +7,7 @@ var typed = 0;
 var inputDisabled = false;
 
 inputField.addEventListener("keydown", (e) => getInput(e));
-
-if (pushed) {
+if (getCookieVal("state") == 3) {
     string = "Let's try this again.\n"
     var mood = getCookieVal("mood");
 
@@ -25,8 +24,13 @@ if (pushed) {
     inputDisabled = true;
     inputField.addEventListener("keydown", (e) => Iapologize(e));
 }
+else if (getCookieVal("state") == 2) {
+    addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.");
+    document.getElementById("star").removeAttribute("hidden");
+}
 else {
     addChatEntry("Hey there, you.\nWhat's your name?");
+
 }
 //initialized chat entry
 
@@ -128,7 +132,7 @@ var buttonPushed = false;
 
 async function buttonClicked() {
     setCookie("buttonPushed", true, 30);
-    incrementCookie("state", 1);
+    incrementCookie("state", 2);
     incrementCookie("mood", -5);
     document.body.style.backgroundColor = "black";
     let face = document.getElementById("face");
@@ -144,12 +148,32 @@ async function buttonClicked() {
         addChatEntry("What are you doing?\nWhy would you push the button?\nI told you not to push the button!\nOh no, the website's breaking now!\nYou have to refresh the page!\nIt's the only way to save the website!\nHurry up! Refresh the page!")
         await delay(200);
         document.getElementById('title').textContent = 'REFRESH';
-        await delay(200)
+        await delay(500);
     }
 }
 var confusion = ["I didn't understand that one.", "I don't get what you're saying.", "I'm confused what that means.", "I don't understand that. Try talking better.", "I have no idea what you're talking about.", "I'm not sure what that means. Hey, I'm not a perfect chatbot.", "You've stumped me. Try phrasing differently."];
 
+async function waitForButton() {
+    await delay(1500);
+    button = showButton();
+    addChatEntry(button);
+    waitOnButton();
+}
 
+async function waitOnButton() {
+    await delay(10000);
+    addChatEntry("Almost got it. Thanks for being patient.");
+    await delay(5000);
+    if (!buttonPushed) {
+        document.getElementById("thebutton").setAttribute("hidden", true);
+        addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.");
+        incrementCookie("mood",5);
+        incrementCookie("state", 1);
+        await delay(2000);
+        document.getElementById("star").removeAttribute("hidden");
+    }
+
+}
     //Parse and generate output from the user's message
 function parse(input) {
     let response;
@@ -244,6 +268,7 @@ function parse(input) {
         if (index == 5){
             name = setBotName(firstState.questions[4].getAnswer());
             response = name.concat(response);
+            waitForButton();
         }
     }
     else if (state == 2) {
@@ -352,6 +377,7 @@ async function addChatEntry(allResponse) {
 
 }
 
+//SLIDESHOW CONTROLS
 let slideIndex = 1;
 showSlides(slideIndex);
 
@@ -374,4 +400,74 @@ function showSlides(n) {
     slides[i].style.display = "none";
   }
   slides[slideIndex-1].style.display = "block";
+}
+
+//DRAGGABLE STAR CONTROLS
+dragElement(document.getElementById("dragStar"));
+var dragging = false;
+
+function elementsOverlap(el1, el2) {
+  const domRect1 = el1.getBoundingClientRect();
+  const domRect2 = el2.getBoundingClientRect();
+
+  return !(
+    domRect1.top > domRect2.bottom ||
+    domRect1.right < domRect2.left ||
+    domRect1.bottom < domRect2.top ||
+    domRect1.left > domRect2.right
+  );
+}
+
+//document.getElementById("face").addEventListener('mouseenter', (event) => {
+//    console.log(dragging);
+//    if (dragging) {
+//        console.log("Overlap");
+//    }
+//});
+
+var face = document.getElementById("face").textContent;
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    elmnt.onmousedown = dragMouseDown;
+    function dragMouseDown(e) {
+        dragging = true;
+        face = document.getElementById("face").textContent;
+        document.getElementById("face").textContent = "( ͒ ۝ ͒ )";
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+    }
+
+    function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+        document.getElementById("face").textContent = face;
+        dragging = false;
+        if (elementsOverlap(document.getElementById("face"), document.getElementById("star"))) {
+            console.log("Overlap");
+        }
+        if (elementsOverlap(document.getElementById("trash"), document.getElementById("star"))) {
+            console.log("Trash");
+        }
+}
 }
