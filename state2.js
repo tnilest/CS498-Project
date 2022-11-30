@@ -1,9 +1,8 @@
 
 let question1_2 = new Question();
-question1_2.setQuestion(["Wow! Thank you so much!\n Well, I've had a wonderful time talking to you.\n Have you enjoyed this experience?\n"]);
-question1_2.setValidAnswers(["yes", "yeah", "duh", "of course", "yup",
-                             "no", "nope", "nah", "no way"]);
-question1_2.setFilterPhrases([]);
+question1_2.setQuestion(["Thank me"]);
+question1_2.setValidAnswers(["thanks", "thank you", "i thank you", "thank you very much", "thank you so much", "thanks a lot"]);
+question1_2.setFilterPhrases(["i wanna say", "i want to say"]);
 
 
 const secondState = new State();

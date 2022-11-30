@@ -80,7 +80,7 @@ function changeTitleColor(color) {
     document.getElementById("title").style.color = color;
     bColor = getCookieVal("backgroundColor");
     if (color == bColor) {
-        incrementCookie("mood", -2);
+        incrementCookie("mood", -3);
         return "Okay, wise guy. Have it your way.\nEnjoy not seeing the title.\nI was gonna make it something really funny but I guess you'll never see it now.\n";
     } else {
         incrementCookie("mood", 2);

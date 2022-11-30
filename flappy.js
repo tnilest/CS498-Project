@@ -4,6 +4,13 @@ let move_speed = 3;
 // Gravity constant value
 let gravity = 0.5;
 
+let mood = getCookieVal("mood");
+if (mood < 0) {
+    document.getElementById("face").src="mad.png";
+}
+else if (mood > 4) {
+    document.getElementById("face").src="happy.png";
+}
 // Getting reference to the bird element
 let bird = document.querySelector('.bird');
 

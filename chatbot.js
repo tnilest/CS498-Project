@@ -10,22 +10,36 @@ inputField.addEventListener("keydown", (e) => getInput(e));
 if (getCookieVal("state") == 3) {
     string = "Let's try this again.\n"
     var mood = getCookieVal("mood");
-
-    if (mood < -1) {
-        string += "You pressing that button could've been disastrous.\nI just wanted to show you this cool website, and you have refused to listen to me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
-    }
-    else if (mood > 1) {
-        string += "You pressing that button could've been disastrous.\nI gave you the benefit of the doubt, but you've betrayed my trust.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+    if (getCookieVal("goodToBad") == "true") {
+        if (mood < -1) {
+            string += "I tried to trust you, but you just couldn't let me do that.\nAll I wanted was that golden star, and you betrayed me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+        }
+        else if (mood > 1) {
+            string += "I have really grown to like you, but then you pull this.\nAll I wanted was that golden star, and you betrayed me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+        }
+        else {
+            string += "I thought we had a good agreement here, but you've ruined that.\nAll I wanted was that golden star, and you betrayed me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again."
+        }
     }
     else {
-        string += "You pressing that button could've been disastrous.\nThankfully I could recover everything in time.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again."
+        if (mood < -1) {
+            string += "You pressing that button could've been disastrous.\nI just wanted to show you this cool website, and you have refused to listen to me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+        }
+        else if (mood > 1) {
+            string += "You pressing that button could've been disastrous.\nI gave you the benefit of the doubt, but you've betrayed my trust.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+        }
+        else {
+            string += "You pressing that button could've been disastrous.\nThankfully I could recover everything in time.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again."
+        }
     }
+
+
     addChatEntry(string);
     inputDisabled = true;
     inputField.addEventListener("keydown", (e) => Iapologize(e));
 }
 else if (getCookieVal("state") == 2) {
-    addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.");
+    addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.\nIt's okay, you can thank me now.");
     document.getElementById("star").removeAttribute("hidden");
 }
 else {
@@ -166,7 +180,7 @@ async function waitOnButton() {
     await delay(5000);
     if (!buttonPushed) {
         document.getElementById("thebutton").setAttribute("hidden", true);
-        addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.");
+        addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.\nIt's okay, you can thank me now.");
         incrementCookie("mood",5);
         incrementCookie("state", 1);
         await delay(2000);
@@ -236,7 +250,6 @@ async function parse(input) {
                 .replace(/^thx$/g, "thanks");
 
     state = checkState();
-    console.log(state);
     addInput(input);
     if (state == 1){
         response = firstState.checkQuestions(text);
@@ -273,16 +286,25 @@ async function parse(input) {
     }
     else if (state == 2) {
         response = secondState.checkQuestions(text);
-        if (confusion.includes(response)) {
-            addChatEntry(response);
-            return
-        }
         var index = secondState.getIndex();
+        if (confusion.includes(response)) {
+            if (index == 0) {
+                addChatEntry("Fine. I don't need your appreciation anyway.\nYou know, I'm taking the gold star back until you're more thankful.\nYou can drag that star, bring it back to me.");
+                incrementCookie("mood", -3);
+                showTrash();
+                return;
+            }
+            addChatEntry(response);
+            return;
+        }
+
 
         //addInput(input);
         if (index == 1) {
-            response = button.concat(response);
-
+            addChatEntry("It's nice to be appreciated.\nI also wish I had a gold star too, though...\nYou know, you can drag that star around the screen...\nIt'd be kind of you to let me keep that one. I did make this whole website for you after all.")
+            incrementCookie("mood", 3);
+            showTrash();
+            return;
         }
     }
     else if (state == 3) {
@@ -319,6 +341,11 @@ async function parse(input) {
 
     addChatEntry(response);
 
+}
+
+async function showTrash() {
+    await delay(3000);
+    document.getElementById("trashPic").removeAttribute("hidden");
 }
 
 
@@ -373,6 +400,18 @@ async function addChatEntry(allResponse) {
 
         
     }
+
+}
+
+async function goToBadEnding() {
+    document.getElementById("face").textContent = "( ͡ಠ ʖ̯ ͡ಠ)";
+    document.getElementById("star").setAttribute("hidden", true);
+    addChatEntry("You just couldn't stand to be kind, could you?\nWhy would you gain my trust just to betray me like this?");
+    incrementCookie("state", 1);
+    setCookie("goodToBad", true, 30);
+    await delay(5000);
+    window.location.reload();
+    return;
 
 }
 
@@ -476,7 +515,7 @@ function dragElement(elmnt) {
             console.log("Overlap");
         }
         if (elementsOverlap(document.getElementById("trash"), document.getElementById("star"))) {
-            console.log("Trash");
+            goToBadEnding();
         }
 }
 }
