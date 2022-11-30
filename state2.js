@@ -1,8 +1,8 @@
 
 let question1_2 = new Question();
-question1_2.setQuestion(["Beginning of state"]);
-question1_2.setValidAnswers([]);
-question1_2.setFilterPhrases([]);
+question1_2.setQuestion(["Thank me"]);
+question1_2.setValidAnswers(["thanks", "thank you", "i thank you", "thank you very much", "thank you so much", "thanks a lot"]);
+question1_2.setFilterPhrases(["i wanna say", "i want to say"]);
 
 //let question2 = new Question();
 //
