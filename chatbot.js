@@ -502,17 +502,12 @@ function dragElement(elmnt) {
         document.getElementById("face").textContent = face;
         dragging = false;
         if (elementsOverlap(document.getElementById("face"), document.getElementById("star"))) {
-
-            if(checkState() == 1){
-                document.getElementById("star").setAttribute("hidden", true);
-                incrementCookie("state", 1);
-                addChatEntry("Wow! Thank you so much!\n Well, I've had a wonderful time talking to you.\n As thanks, I have a fun game I want to show you.\n");
-                await delay (5000);
-                window.location.href = "flappy.html";
-            }
+            document.getElementById("star").setAttribute("hidden", true);
+            addChatEntry("Wow! Thank you so much!\n Well, I've had a wonderful time talking to you.\n As thanks, I have a fun game I want to show you.\n");
+            await delay (5000);
+            window.location.href = "flappy.html";
 
 //            window.location.href = "flappy.html";
-            console.log("Overlap");
         }
         if (elementsOverlap(document.getElementById("trash"), document.getElementById("star"))) {
             goToBadEnding();
@@ -536,16 +531,18 @@ function showButton() {
     }
 }
 
-async function waitOnButton() {
-    await delay(10000);
-    addChatEntry("Almost got it. Thanks for being patient.");
-    await delay(3000);
-    if (!buttonPushed) {
-        document.getElementById("thebutton").setAttribute("hidden", true);
-        addChatEntry("There we go! Thanks for not pressing it. That could've been bad.");
-
-        incrementCookie("mood",5);
-        document.getElementById("star").setAttribute("hidden", false);
-
-    }
-}
+//async function waitOnButton() {
+//    await delay(10000);
+//    addChatEntry("Almost got it. Thanks for being patient.");
+//    await delay(3000);
+//    if (!buttonPushed) {
+//        document.getElementById("thebutton").setAttribute("hidden", true);
+//        addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.\nIt's okay, you can thank me now.");
+//
+//        incrementCookie("mood",5);
+//        incrementCookie("state",1);
+//        await delay(2000);
+//        document.getElementById("star").removeAttribute("hidden");
+//
+//    }
+//}
