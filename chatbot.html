@@ -7,13 +7,46 @@
 	</head>
 
 	<body onload="setup()">
-		<!--<button onclick="deleteAllCookies()">Delete cookies</button>
-		<button onclick="getCookiesDict()">Log cookies</button>
+		<button onclick="deleteAllCookies()" hidden>Delete cookies</button>
+		<!--<button onclick="getCookiesDict()">Log cookies</button>
 		<button onclick='incrementCookie("state",1)'>Increment state</button>
 		<button onclick='setCookie("pageTitle","Test", 30)'>Set Title</button>-->
-		<div style="text-align:center">
-			<h1 class="h4" id="title"></h1>
+		<div id="dragStar" >
+			<img src="star.png" id="star" hidden>
 		</div>
+
+		<div id="holder">
+		  	<div id="glitch" style="display: none"></div>
+		  	<div style="text-align:center">
+				<h1 class="h4" id="title"></h1>
+			</div>
+		</div>
+		<div class="slideshow-container" id="puppySlideshow" style="display: none">
+
+  <!-- Full-width images with number and caption text -->
+		  <div class="mySlides fade">
+			<img src="puppy.jpg" style="width:100%">
+		  </div>
+
+		  <div class="mySlides fade">
+			<img src="puppy2.jpg" style="width:100%">
+		  </div>
+
+		  <div class="mySlides fade">
+			<img src="puppy3.jpg" style="width:100%">
+		  </div>
+
+		  <div class="mySlides fade">
+			<img src="puppy4.jpg" style="width:100%">
+		  </div>
+
+		  <!-- Next and previous buttons -->
+		  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+		  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+		</div>
+
+
+
    		<div id="face" class="face">( ° ͟ʖ °)</div>
 
 		<div id="container" class="container">
@@ -22,12 +55,27 @@
 				<input id="input" type="text" autocomplete="off" autofocus="true" />
 			</div>
 		</div>
+		<button id="delete" onclick="pressedDelete" hidden>Delete Element</button>
+		<button id="puppy" hidden>Show Me Puppy Pictures</button>
+		<div style="text-align:center">
+			<button id="thebutton" class="thebutton" hidden><span id="buttontext">DO NOT PRESS</span></button>
+		</div>
+		<div id="trash">
+			<img src="trash.png" id="trashPic" hidden>
+		</div>
+
+
+
+
 
 		
 	</body>
 	<script type="text/javascript" src="cookies.js"></script> <!-- keep this first -->
 	<script type="text/javascript" src="chatBotState.js"></script>
     <script type="text/javascript" src="state1.js"></script>
+	<script type="text/javascript" src="state2.js"></script>
+	<script type="text/javascript" src="state3.js"></script>
+	<script type="text/javascript" src="zalgo.js"></script>
 	<script type="text/javascript" src="chatbot.js"></script>
 	<script type="text/javascript" src="setup.js"></script>
 

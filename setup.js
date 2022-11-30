@@ -1,9 +1,14 @@
 async function updateBodyInnerHTMLByState(stateNumber) {
+    if (stateNumber == 3 || stateNumber == 2){
+        window.location.reload();
+        return;
+    }
 	const fileName = "state"+stateNumber+".html";
 	console.log(fileName);
     let response = await fetch(fileName);
     let data = await response.text();
     document.body.innerHTML = data;
+
 }
 
 function setupChangeBackgroundColor(color){
@@ -50,14 +55,14 @@ function setup(){
 	// title color
 	updateField("titleColor", setupChangeTitleColor);
 
-	if (state == "1"){
-
-
-	}
-	else if (state == "2"){
-		updateBodyInnerHTMLByState(2);
-	}
-	else if (state == "3"){}
-	else if (state == "4"){}
+//	if (state == "1"){
+//
+//
+//	}
+//	else if (state == "2"){
+//		updateBodyInnerHTMLByState(2);
+//	}
+//	else if (state == "3"){updateBodyInnerHTMLByState(3);}
+//	else if (state == "4"){}
 }
 

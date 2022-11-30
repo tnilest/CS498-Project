@@ -1,26 +1,195 @@
 
-const inputField = document.getElementById("input");
+var inputField = document.getElementById("input");
+
+var pushed = getCookieVal("buttonPushed");
+var typed = 0;
+
+var inputDisabled = false;
+
+inputField.addEventListener("keydown", (e) => getInput(e));
+if (getCookieVal("state") == 3) {
+    string = "Let's try this again.\n"
+    var mood = getCookieVal("mood");
+    if (getCookieVal("goodToBad") == "true") {
+        if (mood < -1) {
+            string += "I tried to trust you, but you just couldn't let me do that.\nAll I wanted was that golden star, and you betrayed me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+        }
+        else if (mood > 1) {
+            string += "I have really grown to like you, but then you pull this.\nAll I wanted was that golden star, and you betrayed me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+        }
+        else {
+            string += "I thought we had a good agreement here, but you've ruined that.\nAll I wanted was that golden star, and you betrayed me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again."
+        }
+    }
+    else {
+        if (mood < -1) {
+            string += "You pressing that button could've been disastrous.\nI just wanted to show you this cool website, and you have refused to listen to me.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+        }
+        else if (mood > 1) {
+            string += "You pressing that button could've been disastrous.\nI gave you the benefit of the doubt, but you've betrayed my trust.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again.";
+        }
+        else {
+            string += "You pressing that button could've been disastrous.\nThankfully I could recover everything in time.\nNow, I can't risk you disobeying like that again. Got it?\nType 'I apologize' to show me this won't happen again."
+        }
+    }
 
 
+    addChatEntry(string);
+    inputDisabled = true;
+    inputField.addEventListener("keydown", (e) => Iapologize(e));
+}
+else if (getCookieVal("state") == 2) {
+    addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.\nIt's okay, you can thank me now.");
+    document.getElementById("star").removeAttribute("hidden");
+}
+else {
+    addChatEntry("Hey there, you.\nWhat's your name?");
+
+}
 //initialized chat entry
-addChatEntry("", "Hey there, you.\nWhat's your name?");
-
-
 
 //Event listener for user hitting enter after typing a message
-inputField.addEventListener("keydown", (e) => {
-    if (e.code === "Enter") {
+
+
+function getInput(e) {
+    if (e.code === "Enter" && !inputDisabled) {
         let input = inputField.value;
         inputField.value = "";
         input = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         parse(input);
     }
-});
+}
 
+async function Iapologize(e) {
+    if (e.code !== "Backspace" && e.code !== "Enter" && inputDisabled) {
+        if (typed == 0) {
+            await delay(2);
+            inputField.value = "I";
+            typed += 1;
+        }
+        else if (typed == 1) {
+            await delay(2);
+            inputField.value = "I ";
+            typed += 1;
+        }
+        else if (typed == 2) {
+            await delay(2);
+            inputField.value = "I a";
+            typed += 1;
+        }
+        else if (typed == 3) {
+            await delay(2);
+            inputField.value = "I ap";
+            typed += 1;
+        }
+        else if (typed == 4) {
+            await delay(2);
+            inputField.value = "I apo";
+            typed += 1;
+        }
+        else if (typed == 5) {
+            await delay(2);
+            inputField.value = "I apol";
+            typed += 1;
+        }
+        else if (typed == 6) {
+            await delay(2);
+            inputField.value = "I apolo";
+            typed += 1;
+        }
+        else if (typed == 7) {
+            await delay(2);
+            inputField.value = "I apolog";
+            typed += 1;
+        }
+        else if (typed == 8) {
+            await delay(2);
+            inputField.value = "I apologi";
+            typed += 1;
+        }
+        else if (typed == 9) {
+            await delay(2);
+            inputField.value = "I apologiz";
+            typed += 1;
+        }
+        else if (typed == 10) {
+            await delay(2);
+            inputField.value = "I apologize";
+            typed += 1;
+        }
+        else {
+            await delay(2);
+            inputField.value = "I apologize";
+        }
+    }
+    else if (e.code === "Backspace") {
+        if (typed > 0) {
+            typed -= 1;
+        }
 
+    }
+    else if (e.code === "Enter") {
+        if (typed == 11) {
+            let input = inputField.value;
+            inputField.value = "";
+            input = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            inputDisabled = false;
+            parse(input);
+        }
+    }
+}
 
+var theButton = document.getElementById("thebutton");
+theButton.addEventListener("click", buttonClicked);
+
+var buttonPushed = false;
+
+async function buttonClicked() {
+    setCookie("buttonPushed", true, 30);
+    incrementCookie("state", 2);
+    incrementCookie("mood", -5);
+    document.body.style.backgroundColor = "black";
+    let face = document.getElementById("face");
+    let title = document.getElementById("title");
+    face.style.color = "white";
+    title.style.color = "white";
+    buttonPushed = true;
+    await delay(2000);
+    document.getElementById("glitch").style.display = "block";
+    oldTitle = document.getElementById('title').textContent;
+    for (var i = 0; i < 1000; i++) {
+        document.getElementById('title').textContent = oldTitle;
+        addChatEntry("What are you doing?\nWhy would you push the button?\nI told you not to push the button!\nOh no, the website's breaking now!\nYou have to refresh the page!\nIt's the only way to save the website!\nHurry up! Refresh the page!")
+        await delay(200);
+        document.getElementById('title').textContent = 'REFRESH';
+        await delay(500);
+    }
+}
+var confusion = ["I didn't understand that one.", "I don't get what you're saying.", "I'm confused what that means.", "I don't understand that. Try talking better.", "I have no idea what you're talking about.", "I'm not sure what that means. Hey, I'm not a perfect chatbot.", "You've stumped me. Try phrasing differently."];
+
+async function waitForButton() {
+    await delay(1500);
+    button = showButton();
+    addChatEntry(button);
+    waitOnButton();
+}
+
+async function waitOnButton() {
+    await delay(10000);
+    addChatEntry("Almost got it. Thanks for being patient.");
+    await delay(5000);
+    if (!buttonPushed) {
+        document.getElementById("thebutton").setAttribute("hidden", true);
+        addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.\nIt's okay, you can thank me now.");
+        incrementCookie("mood",5);
+        incrementCookie("state", 1);
+        await delay(2000);
+        document.getElementById("star").removeAttribute("hidden");
+    }
+
+}
     //Parse and generate output from the user's message
-function parse(input) {
+async function parse(input) {
     let response;
     let text = input.toLowerCase();
     text = text.replace(/[^\w\s\d]/gi, "");
@@ -80,32 +249,83 @@ function parse(input) {
                 .replace(/^np$/g, "no problem")
                 .replace(/^thx$/g, "thanks");
 
-    //Determine what output should be sent
-    response = firstState.checkQuestions(text);
-    var index = firstState.getIndex();
-
-
-
+    state = checkState();
     addInput(input);
-    if (index == 1){
-        name = updateUserName(firstState.questions[0].getAnswer());
-        response = name.concat(response);
+    if (state == 1){
+        response = firstState.checkQuestions(text);
+        if (confusion.includes(response)) {
+            addChatEntry(response);
+            return
+        }
+//        if (response == "next state"){
+//            incrementCookie("state", 1);
+//        }
+        var index = firstState.getIndex();
+
+        //addInput(input);
+        if (index == 1){
+            name = updateUserName(firstState.questions[0].getAnswer());
+            response = name.concat(response);
+        }
+        if (index == 2){
+            color = updateBackgroundColor(firstState.questions[1].getAnswer());
+            response = color.concat(response);
+        }
+        if (index == 3){
+            displayTitle(firstState.questions[2].getAnswer());
+        }
+        if (index == 4){
+            color = changeTitleColor(firstState.questions[3].getAnswer());
+            response = color.concat(response);
+        }
+        if (index == 5){
+            name = setBotName(firstState.questions[4].getAnswer());
+            response = name.concat(response);
+            waitForButton();
+        }
     }
-    if (index == 2){
-        color = updateBackgroundColor(firstState.questions[1].getAnswer());
-        response = color.concat(response);
+    else if (state == 2) {
+        response = secondState.checkQuestions(text);
+        var index = secondState.getIndex();
+        if (confusion.includes(response)) {
+            if (index == 0) {
+                addChatEntry("Fine. I don't need your appreciation anyway.\nYou know, I'm taking the gold star back until you're more thankful.\nYou can drag that star, bring it back to me.");
+                incrementCookie("mood", -3);
+                showTrash();
+                return;
+            }
+            addChatEntry(response);
+            return;
+        }
+
+
+        //addInput(input);
+        if (index == 1) {
+            addChatEntry("It's nice to be appreciated.\nI also wish I had a gold star too, though...\nYou know, you can drag that star around the screen...\nIt'd be kind of you to let me keep that one. I did make this whole website for you after all.")
+            incrementCookie("mood", 3);
+            showTrash();
+            return;
+        }
     }
-    if (index == 3){
-        displayTitle(firstState.questions[2].getAnswer());
+    else if (state == 3) {
+
+        response = badState.checkQuestions(text);
+        if (confusion.includes(response)) {
+            addChatEntry(response);
+            return
+        }
+        var index = badState.getIndex();
+        if (index == 1) {
+            text = removeElement();
+            response = response.concat(text);
+        }
+
+        //addInput(input);
+
+
     }
-    if (index == 4){
-        color = changeTitleColor(firstState.questions[3].getAnswer());
-        response = color.concat(response);
-    }
-    if (index == 5){
-        name = setBotName(firstState.questions[4].getAnswer());
-        response = name.concat(response);
-    }
+    //Determine what output should be sent
+
 
     var mood = getCookieVal("mood");
     if (mood < 0) {
@@ -119,8 +339,13 @@ function parse(input) {
     }
 
 
-    addChatEntry(input, response);
+    addChatEntry(response);
 
+}
+
+async function showTrash() {
+    await delay(3000);
+    document.getElementById("trashPic").removeAttribute("hidden");
 }
 
 
@@ -139,7 +364,7 @@ function addInput(input) {
     messagesContainer.appendChild(userDiv);
 }
 
-async function addChatEntry(input, allResponse) {
+async function addChatEntry(allResponse) {
     let name = getCookieVal("botName");
     let botName = false;
     if (name != '') {
@@ -164,9 +389,160 @@ async function addChatEntry(input, allResponse) {
 
         messagesContainer.scrollTop =
         messagesContainer.scrollHeight - messagesContainer.clientHeight;
-        await delay(1000);
-        botText.innerText = `${response[i]}`;
+        if (buttonPushed) {
+            await delay(50);
+            botText.innerText = `${change(response[i])}`;
+        }
+        else {
+            await delay(1000);
+            botText.innerText = `${response[i]}`;
+        }
+
         
     }
 
 }
+
+async function goToBadEnding() {
+    document.getElementById("face").textContent = "( ͡ಠ ʖ̯ ͡ಠ)";
+    document.getElementById("star").setAttribute("hidden", true);
+    addChatEntry("You just couldn't stand to be kind, could you?\nWhy would you gain my trust just to betray me like this?");
+    incrementCookie("state", 1);
+    setCookie("goodToBad", true, 30);
+    await delay(5000);
+    window.location.reload();
+    return;
+
+}
+
+//SLIDESHOW CONTROLS
+let slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slides[slideIndex-1].style.display = "block";
+}
+
+//DRAGGABLE STAR CONTROLS
+dragElement(document.getElementById("dragStar"));
+var dragging = false;
+
+function elementsOverlap(el1, el2) {
+  const domRect1 = el1.getBoundingClientRect();
+  const domRect2 = el2.getBoundingClientRect();
+
+  return !(
+    domRect1.top > domRect2.bottom ||
+    domRect1.right < domRect2.left ||
+    domRect1.bottom < domRect2.top ||
+    domRect1.left > domRect2.right
+  );
+}
+
+//document.getElementById("face").addEventListener('mouseenter', (event) => {
+//    console.log(dragging);
+//    if (dragging) {
+//        console.log("Overlap");
+//    }
+//});
+
+var face = document.getElementById("face").textContent;
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    elmnt.onmousedown = dragMouseDown;
+    function dragMouseDown(e) {
+        dragging = true;
+        face = document.getElementById("face").textContent;
+        document.getElementById("face").textContent = "( ͒ ۝ ͒ )";
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+    }
+
+    async function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+        document.getElementById("face").textContent = face;
+        dragging = false;
+        if (elementsOverlap(document.getElementById("face"), document.getElementById("star"))) {
+            document.getElementById("star").setAttribute("hidden", true);
+            addChatEntry("Wow! Thank you so much!\n Well, I've had a wonderful time talking to you.\n As thanks, I have a fun game I want to show you.\n");
+            await delay (5000);
+            window.location.href = "flappy.html";
+
+//            window.location.href = "flappy.html";
+        }
+        if (elementsOverlap(document.getElementById("trash"), document.getElementById("star"))) {
+            goToBadEnding();
+        }
+}
+}
+
+function showButton() {
+    document.getElementById("thebutton").removeAttribute("hidden");
+    var mood = getCookieVal("mood");
+
+    if (mood < -1) {
+        return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nI know you're not keen on following directions or listening to me, but it is vital that you do not press that button";
+    }
+    else if (mood > 1) {
+        return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nIt'll take me a second to get that button out of here, but I trust you wouldn't do such a thing as push it.";
+    }
+    else {
+        return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nThis is my website. I'll have that button out of here in a second. Please don't push it."
+
+    }
+}
+
+//async function waitOnButton() {
+//    await delay(10000);
+//    addChatEntry("Almost got it. Thanks for being patient.");
+//    await delay(3000);
+//    if (!buttonPushed) {
+//        document.getElementById("thebutton").setAttribute("hidden", true);
+//        addChatEntry("There we go! Thanks for not pressing it. That could've been bad.\nYou know what you deserve? A golden star.\nIt's okay, you can thank me now.");
+//
+//        incrementCookie("mood",5);
+//        incrementCookie("state",1);
+//        await delay(2000);
+//        document.getElementById("star").removeAttribute("hidden");
+//
+//    }
+//}
