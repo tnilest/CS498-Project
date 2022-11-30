@@ -91,18 +91,4 @@ function changeTitleColor(color) {
 function setBotName(name) {
     setCookie("botName", name, 30);
     return "I like it.\n"
-    var mood = getCookieVal("mood");
-
-    if (mood < -1) {
-        incrementCookie("mood",2);
-        return "Didn't think you were capable of giving me a good name but I am pleasantly surprised.\n";
-    }
-    else if (mood > 1) {
-        incrementCookie("mood",2);
-        return "I love it. I knew I could trust you.\n";
-    }
-    else {
-        incrementCookie("mood",2);
-        return "I like it.\n"
-    }
 }

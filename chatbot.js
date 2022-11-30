@@ -175,7 +175,7 @@ async function waitOnButton() {
 
 }
     //Parse and generate output from the user's message
-function parse(input) {
+async function parse(input) {
     let response;
     let text = input.toLowerCase();
     text = text.replace(/[^\w\s\d]/gi, "");
@@ -244,9 +244,9 @@ function parse(input) {
             addChatEntry(response);
             return
         }
-        if (response == "next state"){
-            incrementCookie("state", 1);
-        }
+//        if (response == "next state"){
+//            incrementCookie("state", 1);
+//        }
         var index = firstState.getIndex();
 
         //addInput(input);
@@ -281,9 +281,8 @@ function parse(input) {
 
         //addInput(input);
         if (index == 1) {
-            button = showButton();
             response = button.concat(response);
-            waitOnButton();
+
         }
     }
     else if (state == 3) {
@@ -457,17 +456,57 @@ function dragElement(elmnt) {
 
     }
 
-    function closeDragElement() {
+    async function closeDragElement() {
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
         document.getElementById("face").textContent = face;
         dragging = false;
         if (elementsOverlap(document.getElementById("face"), document.getElementById("star"))) {
+
+            if(checkState() == 1){
+                document.getElementById("star").setAttribute("hidden", true);
+                incrementCookie("state", 1);
+                addChatEntry("Wow! Thank you so much!\n Well, I've had a wonderful time talking to you.\n As thanks, I have a fun game I want to show you.\n");
+                await delay (5000);
+                window.location.href = "flappy.html";
+            }
+
+//            window.location.href = "flappy.html";
             console.log("Overlap");
         }
         if (elementsOverlap(document.getElementById("trash"), document.getElementById("star"))) {
             console.log("Trash");
         }
 }
+}
+
+function showButton() {
+    document.getElementById("thebutton").removeAttribute("hidden");
+    var mood = getCookieVal("mood");
+
+    if (mood < -1) {
+        return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nI know you're not keen on following directions or listening to me, but it is vital that you do not press that button";
+    }
+    else if (mood > 1) {
+        return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nIt'll take me a second to get that button out of here, but I trust you wouldn't do such a thing as push it.";
+    }
+    else {
+        return "Whoops. How did that get there?\nMust be one of those quirky website bugs. Ignore it.\nThis is my website. I'll have that button out of here in a second. Please don't push it."
+
+    }
+}
+
+async function waitOnButton() {
+    await delay(10000);
+    addChatEntry("Almost got it. Thanks for being patient.");
+    await delay(3000);
+    if (!buttonPushed) {
+        document.getElementById("thebutton").setAttribute("hidden", true);
+        addChatEntry("There we go! Thanks for not pressing it. That could've been bad.");
+
+        incrementCookie("mood",5);
+        document.getElementById("star").setAttribute("hidden", false);
+
+    }
 }
